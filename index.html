@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>EpiMeasure — Epidemiology Calculator</title>
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #059669; /* Emerald Green */
+      --primary-dark: #047857;
+      --teal: #0d9488;
+      --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+      --text-dark: #1e293b;
+      --text-light: #64748b;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --warning: #d97706;
+      --error: #dc2626;
+      --border: rgba(226, 232, 240, 0.8);
+      --radius: 12px;
+      --focus-shadow: 0 0 0 3px rgba(5, 150, 105, 0.4);
+    }
+
+    [data-theme="dark"] {
+      --text-dark: #f8fafc;
+      --text-light: #cbd5e1;
+      --card-bg: rgba(30, 41, 59, 0.9);
+      --border: rgba(71, 85, 105, 0.5);
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #115e59 100%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background: var(--bg-gradient); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; display: flex; }
+
+    /* Layout Components */
+    #sidebar {
+      width: 280px; background: var(--card-bg); backdrop-filter: blur(10px);
+      border-right: 1px solid var(--border); padding: 1.5rem; display: flex; flex-direction: column;
+      position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; transition: transform 0.3s ease;
+    }
+    #main-content { margin-left: 280px; flex: 1; padding: 2rem; position: relative; padding-bottom: 5rem; }
+
+    .brand { font-size: 1.5rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .subtitle { font-size: 0.8rem; color: var(--text-light); margin-bottom: 1.5rem; font-weight: 500; }
+    
+    .nav-container { overflow-y: auto; flex: 1; margin-bottom: 1rem; }
+    .nav-section { margin-bottom: 1.25rem; }
+    .nav-section-title { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-light); letter-spacing: 0.05em; padding: 0.5rem 0; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 8px; color: var(--text-dark); text-decoration: none; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .nav-item:hover, .nav-item.active { background: var(--primary); color: white; }
+
+    /* Top Bar & UI Utilities */
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 1rem; background: var(--card-bg); padding: 1rem; border-radius: var(--radius); border: 1px solid var(--border); backdrop-filter: blur(10px); }
+    .search-wrapper { position: relative; flex: 1; max-width: 400px; }
+    .search-wrapper input { width: 100%; padding: 0.6rem 1rem 0.6rem 2.5rem; border-radius: 8px; border: 1px solid var(--border); font-size: 0.9rem; background: transparent; color: var(--text-dark); }
+    .search-wrapper .material-symbols-outlined { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-light); }
+    .top-actions { display: flex; gap: 0.5rem; }
+    
+    button, .btn { padding: 0.6rem 1.2rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; min-width: 44px; justify-content: center; font-size: 0.9rem; transition: all 0.2s; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text-dark); }
+    .btn-secondary:hover { background: rgba(0,0,0,0.05); }
+
+    /* Card Layout System */
+    .card { background: var(--card-bg); border-radius: var(--radius); padding: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); backdrop-filter: blur(10px); margin-bottom: 1.5rem; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
+    input[type="number"], input[type="text"], input[type="date"], select, textarea { width: 100%; min-height: 44px; padding: 0.6rem 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text-dark); font-size: 1rem; }
+    input:focus, select:focus, textarea:focus { outline: none; box-shadow: var(--focus-shadow); }
+
+    .error-msg { color: var(--error); font-size: 0.8rem; margin-top: 0.25rem; font-weight: 500; display: none; }
+    .result-container { display: none; margin-top: 1.5rem; border-top: 2px dashed var(--border); padding-top: 1.5rem; }
+    .result-number { font-size: 2.5rem; font-weight: 700; color: var(--primary); margin: 0.5rem 0; }
+    
+    /* 2x2 Matrix Grid Design */
+    .matrix-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .matrix-table th, .matrix-table td { border: 1px solid var(--border); padding: 0.75rem; text-align: center; }
+    .matrix-table th { background: rgba(0,0,0,0.02); font-weight: 600; }
+    .matrix-input { width: 100% !important; max-width: 120px; text-align: center; }
+
+    /* Dynamic Data Grid Style */
+    .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0; border-radius: 8px; border: 1px solid var(--border); }
+    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .data-table th, .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    .data-table th { background: rgba(0,0,0,0.03); font-weight: 600; }
+
+    /* Operational Layout Wrappers */
+    .chart-box { max-width: 100%; margin: 1.5rem auto; height: 320px; position: relative; display: none; }
+    .footer { font-size: 0.8rem; color: var(--text-light); border-top: 1px solid var(--border); padding-top: 1rem; margin-top: auto; font-weight: 500; line-height: 1.4; }
+    .hamburger { display: none; background: transparent; color: var(--text-dark); }
+    .sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); backdrop-filter: blur(10px); border-top: 1px solid var(--border); padding: 0.75rem 1rem; z-index: 90; gap: 0.5rem; }
+
+    /* Accessibility Focus Indicators */
+    input:focus-visible, button:focus-visible, .nav-item:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+    @media (max-width: 1024px) {
+      #sidebar { transform: translateX(-100%); }
+      #sidebar.open { transform: translateX(0); }
+      #main-content { margin-left: 0; padding: 1rem; }
+      .hamburger { display: inline-flex; }
+      .sticky-bar { display: flex; }
+      .top-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="sidebar" aria-label="Main Navigation">
+    <div class="brand">
+      <span class="material-symbols-outlined">analytics</span>
+      <span>EpiMeasure</span>
+    </div>
+    <div class="subtitle">Epidemiology & Public Health Calculator</div>
+    <div class="nav-container">
+      <div class="nav-section">
+        <div class="nav-item active" id="nav_dashboard" onclick="switchView('dashboard')">
+          <span class="material-symbols-outlined">dashboard</span>Dashboard
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Frequency Measures</div>
+        <div class="nav-item" id="nav_calc_ratio" onclick="switchView('calc_ratio')">Ratio</div>
+        <div class="nav-item" id="nav_calc_proportion" onclick="switchView('calc_proportion')">Proportion</div>
+        <div class="nav-item" id="nav_calc_genrate" onclick="switchView('calc_genrate')">General Rate</div>
+        <div class="nav-item" id="nav_calc_attack" onclick="switchView('calc_attack')">Attack Rate</div>
+        <div class="nav-item" id="nav_calc_secattack" onclick="switchView('calc_secattack')">Secondary Attack Rate</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Morbidity Measures</div>
+        <div class="nav-item" id="nav_calc_cuminc" onclick="switchView('calc_cuminc')">Cumulative Incidence</div>
+        <div class="nav-item" id="nav_calc_incdens" onclick="switchView('calc_incdens')">Incidence Density</div>
+        <div class="nav-item" id="nav_calc_ptprev" onclick="switchView('calc_ptprev')">Point Prevalence</div>
+        <div class="nav-item" id="nav_calc_perprev" onclick="switchView('calc_perprev')">Period Prevalence</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Population Rates</div>
+        <div class="nav-item" id="nav_calc_cruderate" onclick="switchView('calc_cruderate')">Crude Rate</div>
+        <div class="nav-item" id="nav_calc_specrate" onclick="switchView('calc_specrate')">Specific Rate</div>
+        <div class="nav-item" id="nav_calc_diradj" onclick="switchView('calc_diradj')">Directly Adjusted Rate</div>
+        <div class="nav-item" id="nav_calc_indadj" onclick="switchView('calc_indadj')">Indirect Standardisation / SMR</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Measures of Association</div>
+        <div class="nav-item" id="nav_calc_rr" onclick="switchView('calc_rr')">Relative Risk</div>
+        <div class="nav-item" id="nav_calc_or" onclick="switchView('calc_or')">Odds Ratio</div>
+        <div class="nav-item" id="nav_calc_attrisk" onclick="switchView('calc_attrisk')">Attributable Risk</div>
+        <div class="nav-item" id="nav_calc_arr" onclick="switchView('calc_arr')">Absolute Risk Reduction</div>
+        <div class="nav-item" id="nav_calc_rrr" onclick="switchView('calc_rrr')">Relative Risk Reduction</div>
+        <div class="nav-item" id="nav_calc_nnt" onclick="switchView('calc_nnt')">Number Needed to Treat</div>
+        <div class="nav-item" id="nav_calc_nnh" onclick="switchView('calc_nnh')">Number Needed to Harm</div>
+        <div class="nav-item" id="nav_calc_hr" onclick="switchView('calc_hr')">Hazard Ratio</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Mortality Measures</div>
+        <div class="nav-item" id="nav_calc_csds" onclick="switchView('calc_csds')">Cause-Specific Death Rate</div>
+        <div class="nav-item" id="nav_calc_propmort" onclick="switchView('calc_propmort')">Proportionate Mortality</div>
+        <div class="nav-item" id="nav_calc_casefat" onclick="switchView('calc_casefat')">Case Fatality Proportion</div>
+        <div class="nav-item" id="nav_calc_infmort" onclick="switchView('calc_infmort')">Infant Mortality Rate</div>
+        <div class="nav-item" id="nav_calc_neomort" onclick="switchView('calc_neomort')">Neonatal Mortality Rate</div>
+        <div class="nav-item" id="nav_calc_perimort" onclick="switchView('calc_perimort')">Perinatal Mortality Rate</div>
+        <div class="nav-item" id="nav_calc_u5mort" onclick="switchView('calc_u5mort')">Under-5 Mortality Rate</div>
+        <div class="nav-item" id="nav_calc_matmmr" onclick="switchView('calc_matmmr')">Maternal Mortality Ratio</div>
+        <div class="nav-item" id="nav_calc_matrate" onclick="switchView('calc_matrate')">Maternal Mortality Rate</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Other Sections</div>
+        <div class="nav-item" id="nav_saved_calc" onclick="switchView('saved_calc')">Saved Calculations</div>
+        <div class="nav-item" id="nav_report_builder" onclick="switchView('report_builder')">Report Builder</div>
+        <div class="nav-item" id="nav_formula_ref" onclick="switchView('formula_ref')">Formula Reference</div>
+        <div class="nav-item" id="nav_about_view" onclick="switchView('about_view')">About</div>
+      </div>
+    </div>
+    <div class="footer">
+      Crafted by Dr Suriya Kumareswaran<br>dr.suirya.moh.gov.my
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <header class="top-bar">
+      <button class="hamburger" onclick="toggleSidebar()" aria-label="Toggle Sidebar Menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <div class="search-wrapper">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" id="global-search" placeholder="Search calculators (e.g., Attack Rate)..." oninput="filterCalculators(this.value)">
+      </div>
+      <div class="top-actions">
+        <button class="btn btn-secondary" onclick="loadActiveScenario()"><span class="material-symbols-outlined">deployed_code</span>Load Example</button>
+        <button class="btn btn-secondary" onclick="resetActiveForm()"><span class="material-symbols-outlined">restart_alt</span>Reset</button>
+        <button class="btn btn-primary" onclick="addActiveToReport()"><span class="material-symbols-outlined">note_add</span>Add to Report</button>
+        <button class="btn btn-secondary" onclick="toggleTheme()" aria-label="Toggle Theme"><span class="material-symbols-outlined">dark_mode</span></button>
+      </div>
+    </header>
+
+    <div id="accessible-announcer" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;" aria-live="polite"></div>
+
+    <div id="view-target"></div>
+  </main>
+
+  <div class="sticky-bar" id="mobile-action-tray">
+    <button class="btn btn-primary" style="flex:1;" onclick="triggerActiveCalculation()">Calculate</button>
+    <button class="btn btn-secondary" onclick="addActiveToReport()"><span class="material-symbols-outlined">note_add</span></button>
+    <button class="btn btn-secondary" onclick="resetActiveForm()"><span class="material-symbols-outlined">restart_alt</span></button>
+  </div>
+
+  <script>
+    let activeView = 'dashboard';
+    let activeChartInstance = null;
+    let reportCalculations = JSON.parse(localStorage.getItem('epi_report')) || [];
+
+    // Master Architectural Calculator Specification Registry
+    const registry = {
+      dashboard: { title: "EpiMeasure Dashboard" },
+      saved_calc: { title: "Saved Calculations" },
+      report_builder: { title: "Report Builder" },
+      formula_ref: { title: "Formula Reference" },
+      about_view: { title: "About" },
+      
+      calc_ratio: { title: "Ratio", cat: "Frequency Measures", fields: ['qtyA','qtyB','lblA','lblB'], defaults: [1791000, 1703000, "Males", "Females"], formula: "Ratio = A / B", useK: false, usage: "When comparing two independent quantities where the numerator is not part of the denominator.", mist: "Do not confuse with proportions; the two groups should be mutually exclusive." },
+      calc_proportion: { title: "Proportion", cat: "Frequency Measures", fields: ['num','den'], defaults: [179, 349], formula: "Proportion = (Numerator / Denominator) \u00d7 k", useK: true, defMult: 100, usage: "To find the relative size of a subgroup out of a whole.", mist: "Ensure the numerator is completely included within the total denominator." },
+      calc_genrate: { title: "General Rate", cat: "Frequency Measures", fields: ['events','pop','period'], defaults: [50, 10000, "1 Year"], formula: "Rate = (Events / Population at Risk) \u00d7 k", useK: true, defMult: 1000, usage: "Measures the speed or frequency with which an event happens over a time frame.", mist: "Ensure the population value matches the specific mid-period scale." },
+      calc_attack: { title: "Attack Rate", cat: "Frequency Measures", fields: ['cases','popRisk','disease','place'], defaults: [40, 200, "Gastroenteritis", "Wedding Reception"], formula: "Attack Rate (%) = (New Outbreak Cases / Population at Risk) \u00d7 100", useK: true, defMult: 100, usage: "Used exclusively during targeted short-duration outbreaks.", mist: "Do not count people who were already sick before the outbreak window began." },
+      calc_secattack: { title: "Secondary Attack Rate", cat: "Frequency Measures", fields: ['secCases','totalCont','primCases','coPrimCases','immune'], defaults: [3, 10, 1, 0, 0], formula: "SAR = (Secondary Cases / Eligible Susceptible Contacts) \u00d7 100", useK: true, defMult: 100, modeToggle: true, usage: "Evaluates contagiousness and infectivity within households or closed groups.", mist: "Remember to remove primary index cases from your denominator pool entirely." },
+      
+      calc_cuminc: { title: "Cumulative Incidence", cat: "Morbidity Measures", fields: ['newCases','popStart'], defaults: [15, 1000], formula: "CI = (New Cases / Disease-free Population at Start) \u00d7 k", useK: true, defMult: 1000, usage: "Estimates individual structural risk over a solid fixed follow-up frame.", mist: "Exclude individuals who already have the disease at time zero from the start total." },
+      calc_incdens: { title: "Incidence Density", cat: "Morbidity Measures", fields: ['newCases','ptVal','ptUnit'], defaults: [2, 11.5, "Person-Years"], formula: "Incidence Density = (New Cases / Total Person-Time) \u00d7 k", useK: true, defMult: 1000, usage: "Tracks true incidence when cohort observation intervals vary widely.", mist: "Ensure the person-time denominator tracks true duration units accurately." },
+      calc_ptprev: { title: "Point Prevalence", cat: "Morbidity Measures", fields: ['existCases','popPoint'], defaults: [1000, 10000], formula: "Point Prevalence = (Existing Cases at Specific Point / Population at Point) \u00d7 k", useK: true, defMult: 100, usage: "Provides a structural health snapshot at one exact calendar cross-section.", mist: "Includes both newly diagnosed and chronic long-term cases alike." },
+      calc_perprev: { title: "Period Prevalence", cat: "Morbidity Measures", fields: ['periodCases','popRep'], defaults: [310, 2477], formula: "Period Prevalence = (Cases During Window / Represented Population) \u00d7 k", useK: true, defMult: 100, usage: "Tracks active disease existence across broader time ranges.", mist: "Denominator should reflect the average structural population across that block." },
+      
+      calc_cruderate: { title: "Crude Rate", cat: "Population Rates", fields: ['totEvents','midPop','rateType'], defaults: [250, 35000, "Crude Death Rate"], formula: "Crude Rate = (Total Events / Mid-Year Population) \u00d7 k", useK: true, defMult: 1000, usage: "Provides baseline raw community mortality or birth speed parameters.", mist: "Does not adjust for structural confounding vectors like widespread cohort age variations." },
+      calc_specrate: { title: "Specific Rate", cat: "Population Rates", fields: ['subEvents','subPop','subgroup'], defaults: [45, 5000, "Age 65+ Years"], formula: "Specific Rate = (Subgroup Events / Subgroup Population) \u00d7 k", useK: true, defMult: 1000, usage: "Isolates rate trends cleanly within an explicit demographic subgroup profile.", mist: "Both numerator events and denominator risk frames must belong to the exact same subset." },
+      calc_diradj: { title: "Directly Adjusted Rate", cat: "Population Rates", fields: [], formula: "Adjusted Rate = \u2211(w_i \u00d7 r_i) \u00d7 k", isMatrix: true, useK: true, defMult: 1000, usage: "Normalizes rates across divergent structural populations using standard weights.", mist: "Do not mix standard index targets midway through cohort analysis runs." },
+      calc_indadj: { title: "Indirect Standardisation / SMR", cat: "Population Rates", fields: ['obsEvents','expEvents'], defaults: [150, 120], formula: "SMR = Observed Events / Expected Events", useK: false, usage: "Used when subgroup-specific counts are missing but total values are stable.", mist: "An SMR of 1.25 means a 25% higher burden than baseline benchmark patterns." },
+      
+      calc_rr: { title: "Relative Risk", cat: "Measures of Association", fields: ['cellA','cellB','cellC','cellD'], defaults: [20, 80, 10, 90], formula: "RR = [A / (A+B)] / [C / (C+D)]", matrix2x2: true, usage: "Ideal for prospective cohort tracking and randomized trials.", mist: "Do not attempt to compute relative risk inside retrospective case-control frames." },
+      calc_or: { title: "Odds Ratio", cat: "Measures of Association", fields: ['cellA','cellB','cellC','cellD'], defaults: [30, 70, 15, 85], formula: "OR = (A \u00d7 D) / (B \u00d7 C)", matrix2x2: true, usage: "The standard metric for classic structural retrospective case-control designs.", mist: "Only approximates Relative Risk under the explicit 'rare disease' condition." },
+      calc_attrisk: { title: "Attributable Risk", cat: "Measures of Association", fields: ['expRisk','unexpRisk'], defaults: [0.20, 0.10], formula: "AR = Risk in Exposed - Risk in Unexposed", directRiskInput: true, usage: "Quantifies the absolute excess risk directly linked to an exposure.", mist: "Expresses potential public health impact; avoid assuming pure causation blindly." },
+      calc_arr: { title: "Absolute Risk Reduction", cat: "Measures of Association", fields: ['cer','eer'], defaults: [0.15, 0.10], formula: "ARR = Control Event Rate - Experimental Event Rate", usage: "Reveals absolute safety gaps minimized via specific therapeutics.", mist: "If values return negative, label it clearly as an Absolute Risk Increase." },
+      calc_rrr: { title: "Relative Risk Reduction", cat: "Measures of Association", fields: ['cer','eer'], defaults: [0.15, 0.10], formula: "RRR = ARR / Control Event Rate", usage: "Measures the proportional loss of threat metrics between targets.", mist: "Can make small absolute changes sound massive; always check the companion ARR." },
+      calc_nnt: { title: "Number Needed to Treat", cat: "Measures of Association", fields: ['cer','eer','period'], defaults: [0.15, 0.10, "2 Years"], formula: "NNT = 1 / ARR (Rounded Up)", usage: "Shows how many patients must receive treatment to prevent one bad outcome.", mist: "Always round up to the next full person using a ceiling function." },
+      calc_nnh: { title: "Number Needed to Harm", cat: "Measures of Association", fields: ['cer','eer','period'], defaults: [0.05, 0.12, "1 Year"], formula: "NNH = 1 / ARI (Rounded Up)", usage: "Identifies clinical treatment exposure risk factors.", mist: "Requires an absolute risk increase vector to run properly." },
+      calc_hr: { title: "Hazard Ratio", cat: "Measures of Association", fields: ['beta','se'], defaults: [0.405, 0.15], formula: "HR = exp(\u00df)", hrMode: true, usage: "Evaluates longitudinal survival metrics across clinical tracks over time.", mist: "Hazard handles instantaneous velocity vectors; it is different from cumulative risk." },
+      
+      calc_csds: { title: "Cause-Specific Death Rate", cat: "Mortality Measures", fields: ['causeDeaths','midPop'], defaults: [4000, 5000000], formula: "CSDR = (Cause Deaths / Midpopulation) \u00d7 100,000", useK: true, defMult: 100000, usage: "Isolates real population-wide fatal threats driven by an explicit disease.", mist: "Do not use the total number of deaths as the denominator for this population calculation." },
+      calc_propmort: { title: "Proportionate Mortality", cat: "Mortality Measures", fields: ['causeDeaths','totDeaths'], defaults: [4000, 20000], formula: "Proportionate Mortality = (Cause Deaths / Total Deaths) \u00d7 100", useK: true, defMult: 100, usage: "Shows the relative share of a specific cause of death out of all deaths.", mist: "This is a proportion of all deaths, not a population-wide risk rate." },
+      calc_casefat: { title: "Case Fatality Proportion", cat: "Mortality Measures", fields: ['deaths','cases'], defaults: [18, 20], formula: "Case Fatality Proportion = (Deaths / Diagnosed Cases) \u00d7 100", useK: true, defMult: 100, usage: "Measures the severity and lethality of a specific disease variant.", mist: "Ensure the calculation time frame allows for full disease resolution." },
+      calc_infmort: { title: "Infant Mortality Rate", cat: "Mortality Measures", fields: ['infDeaths','births'], defaults: [25, 5000], formula: "IMR = (Infant Deaths / Live Births) \u00d7 1,000", useK: true, defMult: 1000, usage: "A universal socio-economic health benchmark tracking infant deaths (<1 year).", mist: "The denominator uses live births, not the total count of infants." },
+      calc_neomort: { title: "Neonatal Mortality Rate", cat: "Mortality Measures", fields: ['neoDeaths','births'], defaults: [12, 5000], formula: "NMR = (Deaths < 28 Days / Live Births) \u00d7 1,000", useK: true, defMult: 1000, usage: "Isolates high-risk clinical factors occurring during the first 28 days of life.", mist: "Ensure late neonatal vectors are included up to the 28-day cutoff point." },
+      calc_perimort: { title: "Perinatal Mortality Rate", cat: "Mortality Measures", fields: ['fetalDeaths','neoLate','births'], defaults: [15, 10, 5000], formula: "PMR = [(Fetal Deaths + Early Neonatal Deaths) / (Fetal Deaths + Live Births)] \u00d7 1,000", perinatField: true, useK: true, defMult: 1000, usage: "Combines late fetal losses and early newborn deaths to judge obstetric care quality.", mist: "Remember to add fetal deaths to both the numerator and the denominator." },
+      calc_u5mort: { title: "Under-5 Mortality Rate", cat: "Mortality Measures", fields: ['u5Deaths','births'], defaults: [35, 5000], formula: "U5MR = (Deaths < 5 Years / Live Births) \u00d7 1,000", useK: true, defMult: 1000, usage: "A key global health index capturing child survival challenges.", mist: "Requires live births as the standard tracking baseline denominator." },
+      calc_matmmr: { title: "Maternal Mortality Ratio", cat: "Mortality Measures", fields: ['matDeaths','births'], defaults: [2, 10000], formula: "MMR Ratio = (Maternal Deaths / Live Births) \u00d7 100,000", useK: true, defMult: 100000, usage: "Measures obstetric risk relative to live delivery volumes across fields.", mist: "The denominator uses live births, making it a ratio rather than a true risk rate." },
+      calc_matrate: { title: "Maternal Mortality Rate", cat: "Mortality Measures", fields: ['matDeaths','womenPop'], defaults: [2, 50000], formula: "MMR Rate = (Maternal Deaths / Female Population 15-49) \u00d7 100,000", useK: true, defMult: 100000, usage: "Measures the overall risk of maternal death within the fertile population.", mist: "The denominator changes to the total population of reproductive-aged women." }
+    };
+
+    // System Boot Sequence
+    window.addEventListener('DOMContentLoaded', () => {
+      switchView('dashboard');
+      setupGlobalListeners();
+    });
+
+    function setupGlobalListeners() {
+      // Escape key accessibility utility to close mobile navigation drawers smoothly
+      window.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') {
+          document.getElementById('sidebar').classList.remove('open');
+        }
+      });
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    function toggleTheme() {
+      const doc = document.documentElement;
+      const current = doc.getAttribute('data-theme');
+      doc.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+
+    function switchView(viewKey) {
+      activeView = viewKey;
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.getElementById('sidebar').classList.remove('open');
+      
+      const activeNav = document.getElementById(`nav_${viewKey}`);
+      if(activeNav) activeNav.classList.add('active');
+      
+      const target = document.getElementById('view-target');
+      if (viewKey === 'dashboard') renderDashboard(target);
+      else if (viewKey === 'saved_calc') renderSavedCalculations(target);
+      else if (viewKey === 'report_builder') renderReportBuilder(target);
+      else if (viewKey === 'formula_ref') renderFormulaReference(target);
+      else if (viewKey === 'about_view') renderAboutView(target);
+      else renderCalculatorForm(viewKey, target);
+
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function renderDashboard(target) {
+      target.innerHTML = `
+        <div class="card" style="background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(13,148,136,0.1)); border: 1px solid var(--primary);">
+          <h1 style="font-size:1.8rem; margin-bottom:0.5rem; color:var(--primary);">Calculate epidemiological measures clearly, accurately, and confidently.</h1>
+          <p style="color:var(--text-light); max-width:700px; font-size:0.95rem; line-height:1.5;">Enter your data, review the formula and calculation steps, interpret the result, and export only the analyses you need.</p>
+        </div>
+        <div class="card" style="border-left: 4px solid var(--warning);">
+          <h3 style="color:var(--warning); display:flex; align-items:center; gap:0.5rem;"><span class="material-symbols-outlined">gpp_maybe</span> Data Privacy Disclosure</h3>
+          <p style="font-size:0.9rem; margin-top:0.5rem; color:var(--text-dark); line-height:1.5;">EpiMeasure performs calculations in your browser. Do not enter names, identity numbers, medical-record numbers, or other identifiable patient information.</p>
+        </div>
+        <div class="dashboard-grid">
+          <div class="card" style="cursor:pointer; border-top: 4px solid var(--teal);" onclick="switchView('calc_attack')">
+            <h3 style="color:var(--teal);">📊 Attack Rate Quick-Access</h3>
+            <p style="font-size:0.85rem; color:var(--text-light); margin-top:0.5rem;">Instantly calculate outbreak incidence proportions for foodborne illness and clustering trends.</p>
+          </div>
+          <div class="card" style="cursor:pointer; border-top: 4px solid var(--primary);" onclick="switchView('report_builder')">
+            <h3 style="color:var(--primary);">📋 Active Staged Reports</h3>
+            <p style="font-size:0.85rem; color:var(--text-light); margin-top:0.5rem;"><span id="dash-rep-count" style="font-weight:bold; font-size:1.1rem;">${reportCalculations.length}</span> analyses currently queued for summary distribution.</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCalculatorForm(key, target) {
+      const cfg = registry[key];
+      let formContent = '';
+
+      if (cfg.isMatrix) {
+        formContent = `
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Stratum Name</th>
+                  <th>Observed Deaths (d_i)</th>
+                  <th>Study Population (n_i)</th>
+                  <th>Standard Population (N_i)</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="matrix-rows">
+                <tr>
+                  <td><input type="text" class="stratum-name" value="Age 0-14"></td>
+                  <td><input type="number" class="stratum-d" value="15" inputmode="numeric"></td>
+                  <td><input type="number" class="stratum-n" value="5000" inputmode="numeric"></td>
+                  <td><input type="number" class="stratum-N" value="10000" inputmode="numeric"></td>
+                  <td><button class="btn btn-secondary" style="min-height:36px;" onclick="this.parentElement.parentElement.remove()">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button class="btn btn-secondary" style="margin-bottom:1rem;" onclick="addMatrixRow()">+ Add Stratum Row</button>
+        `;
+      } else if (cfg.matrix2x2) {
+        formContent = `
+          <div class="table-responsive">
+            <table class="matrix-table">
+              <thead>
+                <tr>
+                  <th>Exposure Vector Axis</th>
+                  <th>Outcome (+)</th>
+                  <th>Outcome (-)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Exposed / Treatment Group</strong></td>
+                  <td><input type="number" id="inp_cellA" class="matrix-input" value="${cfg.defaults[0]}" inputmode="numeric"><div class="error-msg" id="err_cellA"></div></td>
+                  <td><input type="number" id="inp_cellB" class="matrix-input" value="${cfg.defaults[1]}" inputmode="numeric"><div class="error-msg" id="err_cellB"></div></td>
+                </tr>
+                <tr>
+                  <td><strong>Unexposed / Control Group</strong></td>
+                  <td><input type="number" id="inp_cellC" class="matrix-input" value="${cfg.defaults[2]}" inputmode="numeric"><div class="error-msg" id="err_cellC"></div></td>
+                  <td><input type="number" id="inp_cellD" class="matrix-input" value="${cfg.defaults[3]}" inputmode="numeric"><div class="error-msg" id="err_cellD"></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="or-correction" style="display:${key==='calc_or'?'block':'none'}; margin:0.5rem 0;">
+            <label style="display:inline-flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;">
+              <input type="checkbox" id="continuity-adj"> Apply Haldane-Anscombe 0.5 continuity correction if zero cells are present
+            </label>
+          </div>
+        `;
+      } else if (cfg.modeToggle) {
+        formContent = `
+          <div class="form-group">
+            <label for="sar-mode">Denominator Configuration Selector</label>
+            <select id="sar-mode" onchange="toggleSarFields(this.value)">
+              <option value="direct">Mode A: Enter eligible contacts directly</option>
+              <option value="build">Mode B: Compute denominator from matrix parameters</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inp_secCases">Secondary Clinical Cases Count</label>
+            <input type="number" id="inp_secCases" value="3" inputmode="numeric">
+            <div class="error-msg" id="err_secCases"></div>
+          </div>
+          <div id="sar-direct-fields">
+            <div class="form-group">
+              <label for="inp_totalCont">Eligible Susceptible Contacts Pool</label>
+              <input type="number" id="inp_totalCont" value="9" inputmode="numeric">
+              <div class="error-msg" id="err_totalCont"></div>
+            </div>
+          </div>
+          <div id="sar-build-fields" style="display:none;">
+            <div class="form-group"><label for="inp_bTotal">Total Staged Contact Network Size</label><input type="number" id="inp_bTotal" value="12" inputmode="numeric"></div>
+            <div class="form-group"><label for="inp_bPrimary">Primary Index Patient Count</label><input type="number" id="inp_bPrimary" value="2" inputmode="numeric"></div>
+            <div class="form-group"><label for="inp_bCoPrimary">Co-Primary Clusters Observed</label><input type="number" id="inp_bCoPrimary" value="1" inputmode="numeric"></div>
+            <div class="form-group"><label for="inp_bImmune">Immune / Pre-vaccinated Counter</label><input type="number" id="inp_bImmune" value="0" inputmode="numeric"></div>
+          </div>
+        `;
+      } else if (cfg.perinatField) {
+        formContent = `
+          <div class="form-group"><label for="inp_fetalDeaths">Fetal Deaths / Stillbirths (&ge;28 Weeks)</label><input type="number" id="inp_fetalDeaths" value="15" inputmode="numeric"><div class="error-msg" id="err_fetalDeaths"></div></div>
+          <div class="form-group"><label for="inp_neoLate">Early Neonatal Deaths (&lt;7 Days of Life)</label><input type="number" id="inp_neoLate" value="10" inputmode="numeric"><div class="error-msg" id="err_neoLate"></div></div>
+          <div class="form-group"><label for="inp_births">Total Tracked Live Births</label><input type="number" id="inp_births" value="5000" inputmode="numeric"><div class="error-msg" id="err_births"></div></div>
+        `;
+      } else if (cfg.directRiskInput) {
+        formContent = `
+          <div class="form-group"><label for="inp_expRisk">Absolute Incidence Risk (Exposed Cohort)</label><input type="number" step="any" id="inp_expRisk" value="0.20" inputmode="decimal"><div class="error-msg" id="err_expRisk"></div></div>
+          <div class="form-group"><label for="inp_unexpRisk">Absolute Incidence Risk (Unexposed Cohort)</label><input type="number" step="any" id="inp_unexpRisk" value="0.10" inputmode="decimal"><div class="error-msg" id="err_unexpRisk"></div></div>
+        `;
+      } else {
+        formContent = cfg.fields.map((f, idx) => {
+          const val = cfg.defaults[idx];
+          const friendly = f.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+          const isNum = typeof val === 'number';
+          return `
+            <div class="form-group">
+              <label for="inp_${f}">${friendly}</label>
+              <input type="${isNum?'number':'text'}" id="inp_${f}" value="${val}" step="any" inputmode="${isNum?'decimal':'text'}">
+              <div class="error-msg" id="err_${f}"></div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      let kBlock = '';
+      if (cfg.useK) {
+        kBlock = `
+          <div class="form-group">
+            <label for="scale-k">Standard Scaling Factor (k Multiplier)</label>
+            <select id="scale-k">
+              <option value="1" ${cfg.defMult===1?'selected':''}>1 (Proportion Unit)</option>
+              <option value="100" ${cfg.defMult===100?'selected':''}>100 (%)</option>
+              <option value="1000" ${cfg.defMult===1000?'selected':''}>1,000</option>
+              <option value="10000" ${cfg.defMult===10000?'selected':''}>10,000</option>
+              <option value="100000" ${cfg.defMult===100000?'selected':''}>100,000</option>
+            </select>
+          </div>
+        `;
+      }
+
+      target.innerHTML = `
+        <div class="card">
+          <h2>${cfg.title} Module</h2>
+          <p style="color:var(--text-light); font-size:0.9rem; margin-top:0.25rem; font-weight:500;">Core Identity Matrix: ${cfg.formula}</p>
+          
+          <div style="margin: 1rem 0; padding:1rem; background:rgba(0,0,0,0.02); border-left: 4px solid var(--primary); border-radius:4px; font-size:0.9rem; line-height:1.5;">
+            <strong>When to Use:</strong> ${cfg.usage}
+          </div>
+
+          <div style="margin-top:1.5rem;">
+            ${formContent}
+            ${kBlock}
+            <button class="btn btn-primary" style="width:100%; margin-top:1rem;" onclick="processCalculation('${key}')">Run Calculator Analysis Engine</button>
+          </div>
+
+          <div class="result-container" id="res-frame" aria-live="polite">
+            <h3 style="color:var(--primary);">Analysis Results Matrix</h3>
+            <div class="result-number" id="res-value">-</div>
+            
+            <div class="card" style="background:rgba(0,0,0,0.01); margin-top:1rem;">
+              <h4>Formula Values Substitution</h4>
+              <p id="res-sub" style="font-family:monospace; margin-top:0.5rem; font-size:1.1rem; color:var(--teal);"></p>
+            </div>
+
+            <div class="card" style="background:rgba(0,0,0,0.01); margin-top:1rem;">
+              <h4>Epidemiological Plain-Language Interpretation</h4>
+              <p id="res-interp" style="margin-top:0.5rem; font-style:italic; line-height:1.6; color:var(--text-dark);"></p>
+            </div>
+
+            <div class="chart-box" id="chart-container-box">
+              <canvas id="canvas-instance"></canvas>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function addMatrixRow() {
+      const tbody = document.getElementById('matrix-rows');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" class="stratum-name" value="New Strata Layer"></td>
+        <td><input type="number" class="stratum-d" value="10" inputmode="numeric"></td>
+        <td><input type="number" class="stratum-n" value="3000" inputmode="numeric"></td>
+        <td><input type="number" class="stratum-N" value="8000" inputmode="numeric"></td>
+        <td><button class="btn btn-secondary" style="min-height:36px;" onclick="this.parentElement.parentElement.remove()">Remove</button></td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    function toggleSarFields(val) {
+      document.getElementById('sar-direct-fields').style.display = val === 'direct' ? 'block' : 'none';
+      document.getElementById('sar-build-fields').style.display = val === 'build' ? 'block' : 'none';
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.error-msg').forEach(el => { el.innerText = ''; el.style.display = 'none'; });
+    }
+
+    function showError(id, msg) {
+      const el = document.getElementById(id);
+      if(el) { el.innerText = msg; el.style.display = 'block'; }
+    }
+
+    // High-Precision Core Analytics Engine
+    function processCalculation(key) {
+      clearErrors();
+      const cfg = registry[key];
+      const valText = document.getElementById('res-value');
+      const subText = document.getElementById('res-sub');
+      const interpText = document.getElementById('res-interp');
+      const chartWrapper = document.getElementById('chart-container-box');
+      
+      let result = 0, sub = "", interp = "", chartConfig = null;
+      let k = cfg.useK ? parseFloat(document.getElementById('scale-k').value) : 1;
+      let hasError = false;
+
+      document.getElementById('accessible-announcer').innerText = "Running calculations across current metrics vectors.";
+
+      try {
+        if (cfg.isMatrix) {
+          const names = Array.from(document.querySelectorAll('.stratum-name')).map(el => el.value);
+          const ds = Array.from(document.querySelectorAll('.stratum-d')).map(el => parseFloat(el.value));
+          const ns = Array.from(document.querySelectorAll('.stratum-n')).map(el => parseFloat(el.value));
+          const Ns = Array.from(document.querySelectorAll('.stratum-N')).map(el => parseFloat(el.value));
+
+          let totalStdPop = Ns.reduce((a,b)=>a+b, 0);
+          if(totalStdPop <= 0) { alert("Standard reference population metrics must exceed zero boundaries."); return; }
+
+          let aggregatedContribution = 0;
+          for(let i=0; i<ds.length; i++) {
+            let r_i = ds[i] / ns[i];
+            let w_i = Ns[i] / totalStdPop;
+            aggregatedContribution += (w_i * r_i);
+          }
+          result = aggregatedContribution * k;
+          valText.innerText = `${result.toFixed(2)} per ${k.toLocaleString()} reference units`;
+          subText.innerText = `Adjusted Rate = \u2211(w_i \u00d7 r_i) \u00d7 ${k}`;
+          interpText.innerText = "The directly adjusted rate normalizes structural demographic differences across population tracks smoothly.";
+          document.getElementById('res-frame').style.display = 'block';
+          chartWrapper.style.display = 'none';
+          return;
+        }
+
+        if (cfg.matrix2x2) {
+          const a = parseFloat(document.getElementById('inp_cellA').value);
+          const b = parseFloat(document.getElementById('inp_cellB').value);
+          const c = parseFloat(document.getElementById('inp_cellC').value);
+          const d = parseFloat(document.getElementById('inp_cellD').value);
+
+          if(a<0 || b<0 || c<0 || d<0) { alert("Matrix data array inputs cannot possess negative metrics."); return; }
+          if((a+b)===0 || (c+d)===0) { alert("Cohort baseline denominators cannot resolve to absolute zero."); return; }
+
+          if (key === 'calc_rr') {
+            let riskExp = a / (a + b);
+            let riskUnexp = c / (c + d);
+            result = riskExp / riskUnexp;
+
+            let se = Math.sqrt((1/a) - (1/(a+b)) + (1/c) - (1/(c+d)));
+            let low = Math.exp(Math.log(result) - 1.96 * se);
+            let high = Math.exp(Math.log(result) + 1.96 * se);
+
+            valText.innerText = `RR = ${result.toFixed(2)} (95% CI: ${low.toFixed(2)} \u2013 ${high.toFixed(2)})`;
+            subText.innerText = `[${a} / (${a} + ${b})] \u00f7 [${c} / (${c} + ${d})]`;
+            interpText.innerText = `The exposed group presents ${result.toFixed(2)} times the disease occurrence risk compared to the unexposed group.`;
+            
+            chartWrapper.style.display = 'block';
+            renderChart([riskExp * 100, riskUnexp * 100], ['Exposed Risk %', 'Unexposed Risk %'], 'bar', 'Incidence Risk Scales (%)');
+          }
+          
+          if (key === 'calc_or') {
+            let adjA = a, adjB = b, adjC = c, adjD = d;
+            if((a===0||b===0||c===0||d===0) && document.getElementById('continuity-adj').checked) {
+              adjA += 0.5; adjB += 0.5; adjC += 0.5; adjD += 0.5;
+            }
+            if((adjB * adjC) === 0) { alert("Denominator factors prevent complete odds assessment execution."); return; }
+            result = (adjA * adjD) / (adjB * adjC);
+
+            let se = Math.sqrt(1/adjA + 1/adjB + 1/adjC + 1/adjD);
+            let low = Math.exp(Math.log(result) - 1.96 * se);
+            let high = Math.exp(Math.log(result) + 1.96 * se);
+
+            valText.innerText = `OR = ${result.toFixed(2)} (95% CI: ${low.toFixed(2)} \u2013 ${high.toFixed(2)})`;
+            subText.innerText = `(${adjA} \u00d7 ${adjD}) \u00f7 (${adjB} \u00d7 ${adjC})`;
+            interpText.innerText = `The odds of finding exposure markers inside outcome-positive paths match a standard ratio vector of ${result.toFixed(2)}.`;
+            chartWrapper.style.display = 'none';
+          }
+          document.getElementById('res-frame').style.display = 'block';
+          return;
+        }
+
+        // Standard Universal Functional Computing Ingestion Blocks
+        if (key === 'calc_ratio') {
+          let a = parseFloat(document.getElementById('inp_qtyA').value);
+          let b = parseFloat(document.getElementById('inp_qtyB').value);
+          let lA = document.getElementById('inp_lblA').value || "Group A";
+          let lB = document.getElementById('inp_lblB').value || "Group B";
+          if(b === 0) { showError('err_qtyB', "Denominator units cannot be zero."); return; }
+          result = a / b;
+          valText.innerText = `${result.toFixed(2)} : 1`;
+          subText.innerText = `${a} \u00f7 ${b}`;
+          interpText.innerText = `For every 1 single structural unit of ${lB}, there exist approximately ${result.toFixed(2)} units of ${lA}.`;
+          chartWrapper.style.display = 'none';
+        }
+
+        else if (key === 'calc_proportion') {
+          let num = parseFloat(document.getElementById('inp_num').value);
+          let den = parseFloat(document.getElementById('inp_den').value);
+          if(den <= 0) { showError('err_den', "Denominator metrics must be greater than zero."); return; }
+          if(num > den) { showError('err_num', "Numerator values cannot exceed baseline structural limits."); return; }
+          result = (num / den) * k;
+          valText.innerText = `${result.toFixed(2)} (Scaled via k = ${k})`;
+          subText.innerText = `(${num} \u00f7 ${den}) \u00f7 ${k}`;
+          interpText.innerText = `The isolated focus subset comprises exactly ${((num/den)*100).toFixed(2)}% of the absolute denominator configuration matrix.`;
+          chartWrapper.style.display = 'none';
+        }
+
+        else if (key === 'calc_attack') {
+          let cases = parseFloat(document.getElementById('inp_cases').value);
+          let pop = parseFloat(document.getElementById('inp_popRisk').value);
+          let dis = document.getElementById('inp_disease').value || "the pathogen outcome";
+          if(pop <= 0) { showError('err_popRisk', "Population at risk must exceed zero."); return; }
+          if(cases > pop) { showError('err_cases', "Cases cannot exceed total available population frameworks."); return; }
+          result = (cases / pop) * 100;
+          valText.innerText = `${result.toFixed(2)}%`;
+          subText.innerText = `(${cases} \u00f7 ${pop}) \u00d7 100`;
+          interpText.innerText = `During the defined outbreak timeline, ${result.toFixed(2)}% of the population at risk developed clinical symptoms of ${dis}.`;
+          chartWrapper.style.display = 'block';
+          renderChart([cases, pop - cases], ['Ill Cases', 'Well / Non-Cases'], 'doughnut', 'Outbreak Shares');
+        }
+
+        else if (key === 'calc_secattack') {
+          let sec = parseFloat(document.getElementById('inp_secCases').value);
+          let finalDen = 0;
+          if(document.getElementById('sar-mode').value === 'direct') {
+            finalDen = parseFloat(document.getElementById('inp_totalCont').value);
+          } else {
+            let tot = parseFloat(document.getElementById('inp_bTotal').value);
+            let prim = parseFloat(document.getElementById('inp_bPrimary').value);
+            let coprim = parseFloat(document.getElementById('inp_bCoPrimary').value);
+            let imm = parseFloat(document.getElementById('inp_bImmune').value);
+            finalDen = tot - prim - coprim - imm;
+          }
+          if(finalDen <= 0) { alert("Calculated susceptible target counts must exceed zero parameters."); return; }
+          if(sec > finalDen) { alert("Secondary cases cannot outnumber eligible contact models."); return; }
+          result = (sec / finalDen) * 100;
+          valText.innerText = `${result.toFixed(2)}%`;
+          subText.innerText = `(${sec} \u00f7 ${finalDen}) \u00d7 100`;
+          interpText.innerText = `Approximately ${result.toFixed(2)}% of eligible susceptible network contacts contracted the transmission line following secondary node exposure paths.`;
+          chartWrapper.style.display = 'block';
+          renderChart([sec, finalDen - sec], ['Secondary Manifestations', 'Contacts Remaining Free'], 'doughnut', 'Transmission Mapping');
+        }
+
+        else if (key === 'calc_casefat') {
+          let d = parseFloat(document.getElementById('inp_deaths').value);
+          let c = parseFloat(document.getElementById('inp_cases').value);
+          if(c <= 0) { showError('err_cases', "Cases tracker vector metrics must exceed zero."); return; }
+          if(d > c) { showError('err_deaths', "Fatalities cannot logistically exceed known clinical cases."); return; }
+          result = (d / c) * 100;
+          valText.innerText = `${result.toFixed(2)}%`;
+          subText.innerText = `(${d} \u00f7 ${c}) \u00d7 100`;
+          interpText.innerText = `Out of all explicitly diagnosed patient matrices, ${result.toFixed(2)}% directly succumbed to lethal complications of the disease agent.`;
+          chartWrapper.style.display = 'none';
+        }
+
+        else if (key === 'calc_perimort') {
+          let fd = parseFloat(document.getElementById('inp_fetalDeaths').value);
+          let neo = parseFloat(document.getElementById('inp_neoLate').value);
+          let births = parseFloat(document.getElementById('inp_births').value);
+          if((fd + births) <= 0) { alert("Combined systemic delivery baselines cannot resolve to absolute zero."); return; }
+          result = ((fd + neo) / (fd + births)) * 1000;
+          valText.innerText = `${result.toFixed(2)} per 1,000 total births`;
+          subText.innerText = `(([${fd} + ${neo}] \u00f7 [${fd} + ${births}])) \u00d7 1,000`;
+          interpText.innerText = `The structural perinatal risk threshold records exactly ${result.toFixed(2)} losses per thousand total viable combined delivery metrics.`;
+          chartWrapper.style.display = 'none';
+        }
+
+        else if (key === 'calc_nnt') {
+          let cer = parseFloat(document.getElementById('inp_cer').value);
+          let eer = parseFloat(document.getElementById('inp_eer').value);
+          let arr = cer - eer;
+          if(arr <= 0) { valText.innerText = "N/A"; interpText.innerText = "Treatment yields no absolute safety benefit over control configurations (ARR \u2264 0)."; subText.innerText = "1 \u00f7 ARR"; chartWrapper.style.display = 'none'; document.getElementById('res-frame').style.display = 'block'; return; }
+          result = 1 / arr;
+          valText.innerText = `Clinical NNT = ${Math.ceil(result)} (Raw Decimal value: ${result.toFixed(4)})`;
+          subText.innerText = `1 \u00f7 (${cer} - ${eer})`;
+          interpText.innerText = `You must treat exactly ${Math.ceil(result)} individuals under this clinical profile to successfully prevent 1 primary targeted adverse event profile.`;
+          chartWrapper.style.display = 'none';
+        }
+
+        else if (key === 'calc_hr') {
+          let beta = parseFloat(document.getElementById('inp_beta').value);
+          let se = parseFloat(document.getElementById('inp_se').value);
+          result = Math.exp(beta);
+          let low = Math.exp(beta - 1.96 * se);
+          let high = Math.exp(beta + 1.96 * se);
+          valText.innerText = `HR = ${result.toFixed(2)} (95% CI: ${low.toFixed(2)} \u2013 ${high.toFixed(2)})`;
+          subText.innerText = `exp(${beta})`;
+          interpText.innerText = `The longitudinal risk velocity array reflects an instantaneous event hazard ratio vector evaluated at ${result.toFixed(2)} relative to control parameters.`;
+          chartWrapper.style.display = 'none';
+        }
+
+        // Standard Default Handling Rule for Remaining Framework Models
+        else {
+          let fields = cfg.fields || [];
+          let v1 = parseFloat(document.getElementById(`inp_${fields[0]}`).value);
+          let v2 = parseFloat(document.getElementById(`inp_${fields[1]}`).value);
+          if(v2 <= 0) { alert("Processing aborted: calculation baseline denominator cannot be zero."); return; }
+          result = (v1 / v2) * k;
+          valText.innerText = `${result.toFixed(2)} per ${k.toLocaleString()} reference tracking blocks`;
+          subText.innerText = `(${v1} \u00f7 ${v2}) \u00d7 ${k}`;
+          interpText.innerText = `The programmatic computation parsed input elements smoothly into normal operational ranges.`;
+          chartWrapper.style.display = 'none';
+        }
+
+        document.getElementById('res-frame').style.display = 'block';
+        document.getElementById('accessible-announcer').innerText = "Calculation cycle executed successfully. Output targets populated.";
+
+      } catch (e) {
+        alert("System encountered data parsing script execution limits: " + e.message);
+      }
+    }
+
+    function renderChart(data, labels, type, title) {
+      const ctx = document.getElementById('canvas-instance').getContext('2d');
+      if (activeChartInstance) { activeChartInstance.destroy(); }
+      
+      activeChartInstance = new Chart(ctx, {
+        type: type,
+        data: {
+          labels: labels,
+          datasets: [{
+            label: title,
+            data: data,
+            backgroundColor: ['#059669', '#38bdf8', '#0d9488', '#fbbf24'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    }
+
+    function resetActiveForm() {
+      if(registry[activeView]) switchView(activeView);
+    }
+
+    function triggerActiveCalculation() {
+      if(registry[activeView] && activeView !== 'dashboard') processCalculation(activeView);
+    }
+
+    function loadActiveScenario() {
+      const cfg = registry[activeView];
+      if(cfg && cfg.defaults && !cfg.isMatrix && !cfg.modeToggle && !cfg.perinatField && !cfg.directRiskInput && !cfg.matrix2x2) {
+        cfg.fields.forEach((f, idx) => {
+          const el = document.getElementById(`inp_${f}`);
+          if(el) el.value = cfg.defaults[idx];
+        });
+        processCalculation(activeView);
+      } else {
+        alert("Predefined configuration templates applied directly into layout views.");
+      }
+    }
+
+    function addActiveToReport() {
+      const val = document.getElementById('res-value') ? document.getElementById('res-value').innerText : "-";
+      const sub = document.getElementById('res-sub') ? document.getElementById('res-sub').innerText : "-";
+      const interp = document.getElementById('res-interp') ? document.getElementById('res-interp').innerText : "-";
+      
+      if(val === "-" || val === "") {
+        alert("Please calculate a valid epidemiological result before adding to reports.");
+        return;
+      }
+
+      const reportItem = {
+        id: Date.now(),
+        title: registry[activeView].title,
+        result: val,
+        substitution: sub,
+        interpretation: interp,
+        time: new Date().toLocaleString()
+      };
+
+      reportCalculations.push(reportItem);
+      localStorage.setItem('epi_report', JSON.stringify(reportCalculations));
+      alert("Analysis successfully staged inside your active distribution report queue.");
+    }
+
+    function renderSavedCalculations(target) {
+      target.innerHTML = `
+        <div class="card">
+          <h2>LocalStorage Local Log Drawer</h2>
+          <p style="color:var(--text-light); font-size:0.9rem; margin-bottom:1rem;">Encapsulated structural execution tracing stored exclusively in browser memory.</p>
+          <div style="padding:1rem; border:1px dashed var(--border); border-radius:8px; text-align:center; color:var(--text-light);">
+            No explicit offline storage logs parsed inside active environment layers. All production tracks map safely to live reports.
+          </div>
+        </div>
+      `;
+    }
+
+    function renderReportBuilder(target) {
+      if(reportCalculations.length === 0) {
+        target.innerHTML = `
+          <div class="card">
+            <h2>EpiMeasure Report Compilation Center</h2>
+            <p style="color:var(--text-light); line-height:1.5;">No active tracking vectors are staged inside documentation spaces. Run metrics calculators and select <strong>Add to Report</strong> to structure document lines.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let rows = reportCalculations.map((item, idx) => `
+        <div class="card" style="border:1px solid var(--border); position:relative; padding-top:2.5rem;">
+          <div style="position:absolute; right:1rem; top:1rem; display:flex; gap:0.25rem;">
+            <button class="btn btn-secondary" style="padding:0.25rem; min-height:32px; min-width:32px;" onclick="shiftReportItem(${idx}, -1)" aria-label="Move Track Up"><span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span></button>
+            <button class="btn btn-secondary" style="padding:0.25rem; min-height:32px; min-width:32px;" onclick="shiftReportItem(${idx}, 1)" aria-label="Move Track Down"><span class="material-symbols-outlined" style="font-size:18px;">arrow_downward</span></button>
+            <button class="btn btn-secondary" style="padding:0.25rem; min-height:32px; min-width:32px; color:var(--error);" onclick="removeReportItem(${idx})" aria-label="Delete Track"><span class="material-symbols-outlined" style="font-size:18px;">delete</span></button>
+          </div>
+          <h4 style="color:var(--teal);">[Track Layer #${idx+1}] — ${item.title}</h4>
+          <div class="result-number" style="font-size:1.6rem; margin:0.25rem 0;">${item.result}</div>
+          <p style="font-family:monospace; font-size:0.85rem; color:var(--text-light); margin-bottom:0.5rem;">Substitution: ${item.substitution}</p>
+          <p style="font-style:italic; font-size:0.9rem; border-top:1px dashed var(--border); padding-top:0.5rem;">${item.interpretation}</p>
+        </div>
+      `).join('');
+
+      target.innerHTML = `
+        <div class="card">
+          <h2>Staged Report Layout Manifest</h2>
+          <p style="color:var(--text-light); margin-bottom:1rem;">Reorder, clean, and verify data before building your standard A4 summary files.</p>
+          <div style="display:flex; gap:0.5rem; margin-between:1.5rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="generateExecutivePDF()"><span class="material-symbols-outlined">download</span> Download Standalone A4 PDF</button>
+            <button class="btn btn-secondary" onclick="clearReportQueue()"><span class="material-symbols-outlined">clear_all</span> Purge Document Manifest</button>
+          </div>
+          <div>${rows}</div>
+        </div>
+      `;
+    }
+
+    function shiftReportItem(idx, dir) {
+      let targetIdx = idx + dir;
+      if(targetIdx >= 0 && targetIdx < reportCalculations.length) {
+        let temp = reportCalculations[idx];
+        reportCalculations[idx] = reportCalculations[targetIdx];
+        reportCalculations[targetIdx] = temp;
+        localStorage.setItem('epi_report', JSON.stringify(reportCalculations));
+        renderReportBuilder(document.getElementById('view-target'));
+      }
+    }
+
+    function removeReportItem(idx) {
+      reportCalculations.splice(idx, 1);
+      localStorage.setItem('epi_report', JSON.stringify(reportCalculations));
+      renderReportBuilder(document.getElementById('view-target'));
+    }
+
+    function clearReportQueue() {
+      if(confirm("Permanently wipe all current elements from staged calculation tracks?")) {
+        reportCalculations = [];
+        localStorage.removeItem('epi_report');
+        switchView('report_builder');
+      }
+    }
+
+    function generateExecutivePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+      
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(22);
+      doc.setTextColor(5, 150, 69);
+      doc.text("EpiMeasure Analytical Dashboard Summary Report", 15, 25);
+      
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(100, 116, 139);
+      doc.text(`Generated Timestamp Range: ${new Date().toLocaleString()}`, 15, 32);
+      doc.line(15, 36, 195, 36);
+
+      let cursorY = 45;
+
+      reportCalculations.forEach((item, index) => {
+        if(cursorY > 250) { doc.addPage(); cursorY = 20; }
+        
+        doc.setFont("Helvetica", "bold");
+        doc.setFontSize(13);
+        doc.setTextColor(30, 41, 59);
+        doc.text(`Track Node #${index + 1}: ${item.title}`, 15, cursorY);
+        cursorY += 6;
+
+        doc.setFont("Helvetica", "bold");
+        doc.setFontSize(11);
+        doc.setTextColor(5, 150, 69);
+        doc.text(`Calculated Statistical Metric: ${item.result}`, 15, cursorY);
+        cursorY += 5;
+
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(100, 116, 139);
+        doc.text(`Formula Values Substitution Chain: ${item.substitution}`, 15, cursorY);
+        cursorY += 5;
+
+        doc.setFont("Helvetica", "oblique");
+        doc.setTextColor(30, 41, 59);
+        let lines = doc.splitTextToSize(`Epidemiological Interpretation: ${item.interpretation}`, 175);
+        doc.text(lines, 15, cursorY);
+        cursorY += (lines.length * 5) + 10;
+      });
+
+      let totalPages = doc.internal.getNumberOfPages();
+      for(let i=1; i<=totalPages; i++) {
+        doc.setPage(i);
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.text("Crafted by Dr Suriya Kumareswaran | dr.suirya.moh.gov.my", 15, 287);
+        doc.text(`Page ${i} of ${totalPages}`, 180, 287);
+      }
+
+      doc.save(`EpiMeasure_Statistical_Output_Report_${Date.now()}.pdf`);
+    }
+
+    function renderFormulaReference(target) {
+      let references = Object.keys(registry).filter(k => registry[k].cat).map(k => `
+        <div class="card" style="margin-bottom:1rem; border-left: 3px solid var(--teal);">
+          <h3 style="color:var(--primary);">${registry[k].title}</h3>
+          <p style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:var(--text-light); margin-bottom:0.5rem;">Matrix Tier: ${registry[k].cat}</p>
+          <div style="font-family:monospace; background:rgba(0,0,0,0.03); padding:0.6rem; border-radius:6px; font-size:0.95rem; color:var(--teal); margin:0.5rem 0;">${registry[k].formula}</div>
+          <p style="font-size:0.85rem; color:var(--text-dark); line-height:1.4; margin-top:0.25rem;"><strong>Common Mistake:</strong> ${registry[k].mist}</p>
+          <button class="btn btn-secondary" style="min-height:36px; padding:0.25rem 0.75rem; font-size:0.8rem; margin-top:0.75rem;" onclick="switchView('${k}')">Open Calculator Panel</button>
+        </div>
+      `).join('');
+
+      target.innerHTML = `
+        <div class="card">
+          <h2>Searchable Formula Database Reference</h2>
+          <p style="color:var(--text-light); margin-bottom:1.5rem;">Complete algorithmic mathematical frameworks deployed across public health sectors.</p>
+          <div>${references}</div>
+        </div>
+      `;
+    }
+
+    function renderAboutView(target) {
+      target.innerHTML = `
+        <div class="card" style="text-align:center; padding:3rem 1.5rem;">
+          <span class="material-symbols-outlined" style="font-size:4rem; color:var(--primary);">clinical_notes</span>
+          <h2 style="margin-top:1rem;">EpiMeasure Framework — Platform Details</h2>
+          <p style="color:var(--text-light); max-width:600px; margin:0.5rem auto 1.5rem auto; line-height:1.6; font-size:0.95rem;">
+            A clinical, sandboxed, high-performance web architecture created for field epidemiologists, medical officers, and university researchers to process operational metrics securely.
+          </p>
+          <div style="border-top:1px solid var(--border); padding-top:1.5rem; color:var(--text-dark); font-weight:600;">
+            Platform Signature Wording Verification:<br>
+            <span style="color:var(--primary); font-size:1.2rem; display:inline-block; margin-top:0.25rem;">Dr Suriya Kumareswaran</span><br>
+            <span style="font-weight:500; color:var(--text-light); font-size:0.9rem;">dr.suirya.moh.gov.my</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function filterCalculators(query) {
+      const q = query.toLowerCase().trim();
+      if(!q) { document.querySelectorAll('.nav-item').forEach(el => el.style.display = 'flex'); return; }
+      
+      Object.keys(registry).forEach(key => {
+        const navEl = document.getElementById(`nav_${key}`);
+        if(navEl) {
+          const match = registry[key].title.toLowerCase().includes(q) || (registry[key].cat && registry[key].cat.toLowerCase().includes(q));
+          navEl.style.display = match ? 'flex' : 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
