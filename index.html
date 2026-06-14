@@ -38,76 +38,93 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     body { background: var(--bg-gradient); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; display: flex; }
 
-    /* Layout Components */
+    /* Structural Layout Containers */
     #sidebar {
       width: 280px; background: var(--card-bg); backdrop-filter: blur(10px);
       border-right: 1px solid var(--border); padding: 1.5rem; display: flex; flex-direction: column;
       position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; transition: transform 0.3s ease;
     }
-    #main-content { margin-left: 280px; flex: 1; padding: 2rem; position: relative; padding-bottom: 5rem; }
+    #main-content { margin-left: 280px; flex: 1; padding: 2rem; position: relative; padding-bottom: 6rem; }
 
-    .brand { font-size: 1.5rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
-    .subtitle { font-size: 0.8rem; color: var(--text-light); margin-bottom: 1.5rem; font-weight: 500; }
+    .brand { font-size: 1.4rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
+    .subtitle { font-size: 0.75rem; color: var(--text-light); margin-bottom: 1.5rem; font-weight: 500; }
     
     .nav-container { overflow-y: auto; flex: 1; margin-bottom: 1rem; }
     .nav-section { margin-bottom: 1.25rem; }
-    .nav-section-title { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-light); letter-spacing: 0.05em; padding: 0.5rem 0; }
-    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 8px; color: var(--text-dark); text-decoration: none; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .nav-section-title { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--text-light); letter-spacing: 0.05em; padding: 0.4rem 0; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.55rem 0.75rem; border-radius: 8px; color: var(--text-dark); text-decoration: none; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
     .nav-item:hover, .nav-item.active { background: var(--primary); color: white; }
 
-    /* Top Bar & UI Utilities */
-    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 1rem; background: var(--card-bg); padding: 1rem; border-radius: var(--radius); border: 1px solid var(--border); backdrop-filter: blur(10px); }
+    /* Top Action Navigation Bars */
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem; background: var(--card-bg); padding: 0.75rem 1rem; border-radius: var(--radius); border: 1px solid var(--border); backdrop-filter: blur(10px); }
     .search-wrapper { position: relative; flex: 1; max-width: 400px; }
-    .search-wrapper input { width: 100%; padding: 0.6rem 1rem 0.6rem 2.5rem; border-radius: 8px; border: 1px solid var(--border); font-size: 0.9rem; background: transparent; color: var(--text-dark); }
-    .search-wrapper .material-symbols-outlined { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-light); }
-    .top-actions { display: flex; gap: 0.5rem; }
+    .search-wrapper input { width: 100%; padding: 0.55rem 1rem 0.55rem 2.2rem; border-radius: 8px; border: 1px solid var(--border); font-size: 0.85rem; background: transparent; color: var(--text-dark); }
+    .search-wrapper .material-symbols-outlined { position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--text-light); }
+    .top-actions { display: flex; gap: 0.4rem; }
     
-    button, .btn { padding: 0.6rem 1.2rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; min-width: 44px; justify-content: center; font-size: 0.9rem; transition: all 0.2s; }
+    button, .btn { padding: 0.5rem 1rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; justify-content: center; font-size: 0.85rem; transition: all 0.2s; }
     .btn-primary { background: var(--primary); color: white; }
     .btn-primary:hover { background: var(--primary-dark); }
     .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text-dark); }
     .btn-secondary:hover { background: rgba(0,0,0,0.05); }
 
-    /* Card Layout System */
-    .card { background: var(--card-bg); border-radius: var(--radius); padding: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); backdrop-filter: blur(10px); margin-bottom: 1.5rem; }
-    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-    .form-group { margin-bottom: 1.25rem; }
-    label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
-    input[type="number"], input[type="text"], input[type="date"], select, textarea { width: 100%; min-height: 44px; padding: 0.6rem 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text-dark); font-size: 1rem; }
+    /* Layout Cards & Data Entry Forms */
+    .card { background: var(--card-bg); border-radius: var(--radius); padding: 1.25rem; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04); backdrop-filter: blur(10px); margin-bottom: 1.25rem; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; font-weight: 600; margin-bottom: 0.4rem; font-size: 0.85rem; color: var(--text-dark); }
+    
+    /* Input Elements Formatted Natively to Safeguard Zoom Rules */
+    input[type="number"], input[type="text"], input[type="date"], select, textarea { width: 100%; min-height: 44px; padding: 0.55rem 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text-dark); font-size: 16px; }
     input:focus, select:focus, textarea:focus { outline: none; box-shadow: var(--focus-shadow); }
 
-    .error-msg { color: var(--error); font-size: 0.8rem; margin-top: 0.25rem; font-weight: 500; display: none; }
-    .result-container { display: none; margin-top: 1.5rem; border-top: 2px dashed var(--border); padding-top: 1.5rem; }
-    .result-number { font-size: 2.5rem; font-weight: 700; color: var(--primary); margin: 0.5rem 0; }
+    .error-msg { color: var(--error); font-size: 0.75rem; margin-top: 0.25rem; font-weight: 500; display: none; }
+    .result-container { display: none; margin-top: 1.25rem; border-top: 2px dashed var(--border); padding-top: 1.25rem; }
+    .result-number { font-size: 2.2rem; font-weight: 700; color: var(--primary); margin: 0.25rem 0; word-wrap: break-word; }
     
-    /* 2x2 Matrix Grid Design */
-    .matrix-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .matrix-table th, .matrix-table td { border: 1px solid var(--border); padding: 0.75rem; text-align: center; }
+    /* Contingency Matrix Framework Configurations */
+    .matrix-table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; }
+    .matrix-table th, .matrix-table td { border: 1px solid var(--border); padding: 0.6rem; text-align: center; font-size: 0.85rem; }
     .matrix-table th { background: rgba(0,0,0,0.02); font-weight: 600; }
-    .matrix-input { width: 100% !important; max-width: 120px; text-align: center; }
+    .matrix-input { width: 100% !important; max-width: 100px; text-align: center; font-size: 16px; min-height: 38px; }
 
-    /* Dynamic Data Grid Style */
-    .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0; border-radius: 8px; border: 1px solid var(--border); }
+    /* Dynamic Scroll Responsive Tables */
+    .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0.75rem 0; border-radius: 8px; border: 1px solid var(--border); }
     .data-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .data-table th, .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+    .data-table th, .data-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
     .data-table th { background: rgba(0,0,0,0.03); font-weight: 600; }
 
-    /* Operational Layout Wrappers */
-    .chart-box { max-width: 100%; margin: 1.5rem auto; height: 320px; position: relative; display: none; }
-    .footer { font-size: 0.8rem; color: var(--text-light); border-top: 1px solid var(--border); padding-top: 1rem; margin-top: auto; font-weight: 500; line-height: 1.4; }
+    /* Operational Chart Interfaces */
+    .chart-box { max-width: 100%; margin: 1.25rem auto; height: 280px; position: relative; display: none; }
+    .footer { font-size: 0.75rem; color: var(--text-light); border-top: 1px solid var(--border); padding-top: 0.75rem; margin-top: auto; font-weight: 500; line-height: 1.4; }
     .hamburger { display: none; background: transparent; color: var(--text-dark); }
-    .sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); backdrop-filter: blur(10px); border-top: 1px solid var(--border); padding: 0.75rem 1rem; z-index: 90; gap: 0.5rem; }
+    .sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); backdrop-filter: blur(10px); border-top: 1px solid var(--border); padding: 0.6rem 0.8rem; z-index: 90; gap: 0.4rem; }
 
-    /* Accessibility Focus Indicators */
-    input:focus-visible, button:focus-visible, .nav-item:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
-
+    /* Mobile UX Layout Overrides */
     @media (max-width: 1024px) {
       #sidebar { transform: translateX(-100%); }
       #sidebar.open { transform: translateX(0); }
-      #main-content { margin-left: 0; padding: 1rem; }
+      #main-content { margin-left: 0; padding: 0.75rem; }
       .hamburger { display: inline-flex; }
       .sticky-bar { display: flex; }
       .top-actions { display: none; }
+    }
+
+    /* Target Optimization Rules for Compact Smart Phone Viewports */
+    @media (max-width: 480px) {
+      #main-content { padding: 0.5rem; padding-bottom: 6.5rem; }
+      .top-bar { margin-bottom: 1rem; padding: 0.5rem; }
+      .card { padding: 0.95rem; margin-bottom: 1rem; border-radius: 10px; }
+      
+      h1, h2 { font-size: 1.3rem !important; font-weight: 700; }
+      h3, h4 { font-size: 1rem !important; }
+      p, td, th, span { font-size: 0.8rem !important; }
+      
+      .result-number { font-size: 1.8rem !important; }
+      .matrix-input { font-size: 16px; min-height: 44px; } /* Enforce touch height but small structure footprint */
+      button, .btn { font-size: 0.8rem; min-height: 42px; padding: 0.4rem 0.8rem; }
+      
+      .brand { font-size: 1.25rem; }
     }
   </style>
 </head>
@@ -185,18 +202,18 @@
 
   <main id="main-content">
     <header class="top-bar">
-      <button class="hamburger" onclick="toggleSidebar()" aria-label="Toggle Sidebar Menu">
+      <button class="hamburger" onclick="toggleSidebar()" aria-label="Toggle Navigation Options">
         <span class="material-symbols-outlined">menu</span>
       </button>
       <div class="search-wrapper">
         <span class="material-symbols-outlined">search</span>
-        <input type="text" id="global-search" placeholder="Search calculators (e.g., Attack Rate)..." oninput="filterCalculators(this.value)">
+        <input type="text" id="global-search" placeholder="Search calculators (e.g., Odds Ratio)..." oninput="filterCalculators(this.value)">
       </div>
       <div class="top-actions">
         <button class="btn btn-secondary" onclick="loadActiveScenario()"><span class="material-symbols-outlined">deployed_code</span>Load Example</button>
         <button class="btn btn-secondary" onclick="resetActiveForm()"><span class="material-symbols-outlined">restart_alt</span>Reset</button>
         <button class="btn btn-primary" onclick="addActiveToReport()"><span class="material-symbols-outlined">note_add</span>Add to Report</button>
-        <button class="btn btn-secondary" onclick="toggleTheme()" aria-label="Toggle Theme"><span class="material-symbols-outlined">dark_mode</span></button>
+        <button class="btn btn-secondary" onclick="toggleTheme()" aria-label="Toggle Interface Contrast Mode"><span class="material-symbols-outlined">dark_mode</span></button>
       </div>
     </header>
 
@@ -209,6 +226,7 @@
     <button class="btn btn-primary" style="flex:1;" onclick="triggerActiveCalculation()">Calculate</button>
     <button class="btn btn-secondary" onclick="addActiveToReport()"><span class="material-symbols-outlined">note_add</span></button>
     <button class="btn btn-secondary" onclick="resetActiveForm()"><span class="material-symbols-outlined">restart_alt</span></button>
+    <button class="btn btn-secondary" onclick="toggleTheme()"><span class="material-symbols-outlined">dark_mode</span></button>
   </div>
 
   <script>
@@ -216,7 +234,7 @@
     let activeChartInstance = null;
     let reportCalculations = JSON.parse(localStorage.getItem('epi_report')) || [];
 
-    // Master Architectural Calculator Specification Registry
+    // Master System Functional Calculator Catalog Specifications
     const registry = {
       dashboard: { title: "EpiMeasure Dashboard" },
       saved_calc: { title: "Saved Calculations" },
@@ -256,22 +274,18 @@
       calc_neomort: { title: "Neonatal Mortality Rate", cat: "Mortality Measures", fields: ['neoDeaths','births'], defaults: [12, 5000], formula: "NMR = (Deaths < 28 Days / Live Births) \u00d7 1,000", useK: true, defMult: 1000, usage: "Isolates high-risk clinical factors occurring during the first 28 days of life.", mist: "Ensure late neonatal vectors are included up to the 28-day cutoff point." },
       calc_perimort: { title: "Perinatal Mortality Rate", cat: "Mortality Measures", fields: ['fetalDeaths','neoLate','births'], defaults: [15, 10, 5000], formula: "PMR = [(Fetal Deaths + Early Neonatal Deaths) / (Fetal Deaths + Live Births)] \u00d7 1,000", perinatField: true, useK: true, defMult: 1000, usage: "Combines late fetal losses and early newborn deaths to judge obstetric care quality.", mist: "Remember to add fetal deaths to both the numerator and the denominator." },
       calc_u5mort: { title: "Under-5 Mortality Rate", cat: "Mortality Measures", fields: ['u5Deaths','births'], defaults: [35, 5000], formula: "U5MR = (Deaths < 5 Years / Live Births) \u00d7 1,000", useK: true, defMult: 1000, usage: "A key global health index capturing child survival challenges.", mist: "Requires live births as the standard tracking baseline denominator." },
-      calc_matmmr: { title: "Maternal Mortality Ratio", cat: "Mortality Measures", fields: ['matDeaths','births'], defaults: [2, 10000], formula: "MMR Ratio = (Maternal Deaths / Live Births) \u00d7 100,000", useK: true, defMult: 100000, usage: "Measures obstetric risk relative to live delivery volumes across fields.", mist: "The denominator uses live births, making it a ratio rather than a true risk rate." },
+      doc_matmmr: { title: "Maternal Mortality Ratio", cat: "Mortality Measures", fields: ['matDeaths','births'], defaults: [2, 10000], formula: "MMR Ratio = (Maternal Deaths / Live Births) \u00d7 100,000", useK: true, defMult: 100000, usage: "Measures obstetric risk relative to live delivery volumes across fields.", mist: "The denominator uses live births, making it a ratio rather than a true risk rate." },
       calc_matrate: { title: "Maternal Mortality Rate", cat: "Mortality Measures", fields: ['matDeaths','womenPop'], defaults: [2, 50000], formula: "MMR Rate = (Maternal Deaths / Female Population 15-49) \u00d7 100,000", useK: true, defMult: 100000, usage: "Measures the overall risk of maternal death within the fertile population.", mist: "The denominator changes to the total population of reproductive-aged women." }
     };
 
-    // System Boot Sequence
     window.addEventListener('DOMContentLoaded', () => {
       switchView('dashboard');
-      setupGlobalListeners();
+      setupEscListener();
     });
 
-    function setupGlobalListeners() {
-      // Escape key accessibility utility to close mobile navigation drawers smoothly
+    function setupEscListener() {
       window.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape') {
-          document.getElementById('sidebar').classList.remove('open');
-        }
+        if(e.key === 'Escape') document.getElementById('sidebar').classList.remove('open');
       });
     }
 
@@ -281,8 +295,7 @@
 
     function toggleTheme() {
       const doc = document.documentElement;
-      const current = doc.getAttribute('data-theme');
-      doc.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+      doc.setAttribute('data-theme', doc.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
     }
 
     function switchView(viewKey) {
@@ -306,22 +319,22 @@
 
     function renderDashboard(target) {
       target.innerHTML = `
-        <div class="card" style="background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(13,148,136,0.1)); border: 1px solid var(--primary);">
-          <h1 style="font-size:1.8rem; margin-bottom:0.5rem; color:var(--primary);">Calculate epidemiological measures clearly, accurately, and confidently.</h1>
-          <p style="color:var(--text-light); max-width:700px; font-size:0.95rem; line-height:1.5;">Enter your data, review the formula and calculation steps, interpret the result, and export only the analyses you need.</p>
+        <div class="card" style="background: linear-gradient(135deg, rgba(5,150,105,0.08), rgba(13,148,136,0.08)); border: 1px solid var(--primary);">
+          <h1 style="font-size:1.5rem; margin-bottom:0.4rem; color:var(--primary);">Calculate epidemiological measures clearly, accurately, and confidently.</h1>
+          <p style="color:var(--text-light); max-width:700px; font-size:0.9rem; line-height:1.5;">Enter your data, review the formula and calculation steps, interpret the result, and export only the analyses you need.</p>
         </div>
-        <div class="card" style="border-left: 4px solid var(--warning);">
-          <h3 style="color:var(--warning); display:flex; align-items:center; gap:0.5rem;"><span class="material-symbols-outlined">gpp_maybe</span> Data Privacy Disclosure</h3>
-          <p style="font-size:0.9rem; margin-top:0.5rem; color:var(--text-dark); line-height:1.5;">EpiMeasure performs calculations in your browser. Do not enter names, identity numbers, medical-record numbers, or other identifiable patient information.</p>
+        <div class="card" style="border-left: 4px solid var(--warning); padding:1rem;">
+          <h3 style="color:var(--warning); display:flex; align-items:center; gap:0.4rem; font-size:0.95rem;"><span class="material-symbols-outlined" style="font-size:20px;">gpp_maybe</span> Data Privacy Disclosure</h3>
+          <p style="font-size:0.85rem; margin-top:0.3rem; color:var(--text-dark); line-height:1.4;">EpiMeasure performs calculations in your browser. Do not enter names, identity numbers, medical-record numbers, or other identifiable patient information.</p>
         </div>
         <div class="dashboard-grid">
-          <div class="card" style="cursor:pointer; border-top: 4px solid var(--teal);" onclick="switchView('calc_attack')">
-            <h3 style="color:var(--teal);">📊 Attack Rate Quick-Access</h3>
-            <p style="font-size:0.85rem; color:var(--text-light); margin-top:0.5rem;">Instantly calculate outbreak incidence proportions for foodborne illness and clustering trends.</p>
+          <div class="card" style="cursor:pointer; border-top: 3px solid var(--teal);" onclick="switchView('calc_attack')">
+            <h3 style="color:var(--teal); font-size:0.95rem;">📊 Attack Rate Quick-Access</h3>
+            <p style="font-size:0.8rem; color:var(--text-light); margin-top:0.4rem;">Instantly trace pathogen clusters and compute foodborne incident risk configurations cleanly.</p>
           </div>
-          <div class="card" style="cursor:pointer; border-top: 4px solid var(--primary);" onclick="switchView('report_builder')">
-            <h3 style="color:var(--primary);">📋 Active Staged Reports</h3>
-            <p style="font-size:0.85rem; color:var(--text-light); margin-top:0.5rem;"><span id="dash-rep-count" style="font-weight:bold; font-size:1.1rem;">${reportCalculations.length}</span> analyses currently queued for summary distribution.</p>
+          <div class="card" style="cursor:pointer; border-top: 3px solid var(--primary);" onclick="switchView('report_builder')">
+            <h3 style="color:var(--primary); font-size:0.95rem;">📋 Active Staged Reports</h3>
+            <p style="font-size:0.8rem; color:var(--text-light); margin-top:0.4rem;"><span id="dash-rep-count" style="font-weight:700; font-size:1rem;">${reportCalculations.length}</span> analytical sets structured for presentation outputs.</p>
           </div>
         </div>
       `;
@@ -350,12 +363,12 @@
                   <td><input type="number" class="stratum-d" value="15" inputmode="numeric"></td>
                   <td><input type="number" class="stratum-n" value="5000" inputmode="numeric"></td>
                   <td><input type="number" class="stratum-N" value="10000" inputmode="numeric"></td>
-                  <td><button class="btn btn-secondary" style="min-height:36px;" onclick="this.parentElement.parentElement.remove()">Remove</button></td>
+                  <td><button class="btn btn-secondary" style="min-height:36px; padding:0 0.5rem;" onclick="this.parentElement.parentElement.remove()">Remove</button></td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <button class="btn btn-secondary" style="margin-bottom:1rem;" onclick="addMatrixRow()">+ Add Stratum Row</button>
+          <button class="btn btn-secondary" style="margin-bottom:1rem; min-height:38px;" onclick="addMatrixRow()">+ Add Stratum Row</button>
         `;
       } else if (cfg.matrix2x2) {
         formContent = `
@@ -363,35 +376,35 @@
             <table class="matrix-table">
               <thead>
                 <tr>
-                  <th>Exposure Vector Axis</th>
+                  <th>Exposure Axis</th>
                   <th>Outcome (+)</th>
                   <th>Outcome (-)</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>Exposed / Treatment Group</strong></td>
-                  <td><input type="number" id="inp_cellA" class="matrix-input" value="${cfg.defaults[0]}" inputmode="numeric"><div class="error-msg" id="err_cellA"></div></td>
-                  <td><input type="number" id="inp_cellB" class="matrix-input" value="${cfg.defaults[1]}" inputmode="numeric"><div class="error-msg" id="err_cellB"></div></td>
+                  <td><strong>Exposed / Treatment</strong></td>
+                  <td><input type="number" id="inp_cellA" class="matrix-input" value="${cfg.defaults[0]}" inputmode="numeric"></td>
+                  <td><input type="number" id="inp_cellB" class="matrix-input" value="${cfg.defaults[1]}" inputmode="numeric"></td>
                 </tr>
                 <tr>
-                  <td><strong>Unexposed / Control Group</strong></td>
-                  <td><input type="number" id="inp_cellC" class="matrix-input" value="${cfg.defaults[2]}" inputmode="numeric"><div class="error-msg" id="err_cellC"></div></td>
-                  <td><input type="number" id="inp_cellD" class="matrix-input" value="${cfg.defaults[3]}" inputmode="numeric"><div class="error-msg" id="err_cellD"></div></td>
+                  <td><strong>Unexposed / Control</strong></td>
+                  <td><input type="number" id="inp_cellC" class="matrix-input" value="${cfg.defaults[2]}" inputmode="numeric"></td>
+                  <td><input type="number" id="inp_cellD" class="matrix-input" value="${cfg.defaults[3]}" inputmode="numeric"></td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div id="or-correction" style="display:${key==='calc_or'?'block':'none'}; margin:0.5rem 0;">
-            <label style="display:inline-flex; align-items:center; gap:0.5rem; font-weight:normal; cursor:pointer;">
-              <input type="checkbox" id="continuity-adj"> Apply Haldane-Anscombe 0.5 continuity correction if zero cells are present
+          <div id="or-correction" style="display:${key==='calc_or'?'block':'none'}; margin:0.4rem 0;">
+            <label style="display:inline-flex; align-items:center; gap:0.4rem; font-weight:normal; cursor:pointer;">
+              <input type="checkbox" id="continuity-adj"> Apply 0.5 continuity correction if zero cells are present
             </label>
           </div>
         `;
       } else if (cfg.modeToggle) {
         formContent = `
           <div class="form-group">
-            <label for="sar-mode">Denominator Configuration Selector</label>
+            <label for="sar-mode">Denominator Configuration Mode</label>
             <select id="sar-mode" onchange="toggleSarFields(this.value)">
               <option value="direct">Mode A: Enter eligible contacts directly</option>
               <option value="build">Mode B: Compute denominator from matrix parameters</option>
@@ -400,17 +413,15 @@
           <div class="form-group">
             <label for="inp_secCases">Secondary Clinical Cases Count</label>
             <input type="number" id="inp_secCases" value="3" inputmode="numeric">
-            <div class="error-msg" id="err_secCases"></div>
           </div>
           <div id="sar-direct-fields">
             <div class="form-group">
               <label for="inp_totalCont">Eligible Susceptible Contacts Pool</label>
               <input type="number" id="inp_totalCont" value="9" inputmode="numeric">
-              <div class="error-msg" id="err_totalCont"></div>
             </div>
           </div>
           <div id="sar-build-fields" style="display:none;">
-            <div class="form-group"><label for="inp_bTotal">Total Staged Contact Network Size</label><input type="number" id="inp_bTotal" value="12" inputmode="numeric"></div>
+            <div class="form-group"><label for="inp_bTotal">Total Contact Network Size</label><input type="number" id="inp_bTotal" value="12" inputmode="numeric"></div>
             <div class="form-group"><label for="inp_bPrimary">Primary Index Patient Count</label><input type="number" id="inp_bPrimary" value="2" inputmode="numeric"></div>
             <div class="form-group"><label for="inp_bCoPrimary">Co-Primary Clusters Observed</label><input type="number" id="inp_bCoPrimary" value="1" inputmode="numeric"></div>
             <div class="form-group"><label for="inp_bImmune">Immune / Pre-vaccinated Counter</label><input type="number" id="inp_bImmune" value="0" inputmode="numeric"></div>
@@ -418,14 +429,14 @@
         `;
       } else if (cfg.perinatField) {
         formContent = `
-          <div class="form-group"><label for="inp_fetalDeaths">Fetal Deaths / Stillbirths (&ge;28 Weeks)</label><input type="number" id="inp_fetalDeaths" value="15" inputmode="numeric"><div class="error-msg" id="err_fetalDeaths"></div></div>
-          <div class="form-group"><label for="inp_neoLate">Early Neonatal Deaths (&lt;7 Days of Life)</label><input type="number" id="inp_neoLate" value="10" inputmode="numeric"><div class="error-msg" id="err_neoLate"></div></div>
-          <div class="form-group"><label for="inp_births">Total Tracked Live Births</label><input type="number" id="inp_births" value="5000" inputmode="numeric"><div class="error-msg" id="err_births"></div></div>
+          <div class="form-group"><label for="inp_fetalDeaths">Fetal Deaths / Stillbirths Counter</label><input type="number" id="inp_fetalDeaths" value="15" inputmode="numeric"></div>
+          <div class="form-group"><label for="inp_neoLate">Early Neonatal Deaths (&lt;7 Days)</label><input type="number" id="inp_neoLate" value="10" inputmode="numeric"></div>
+          <div class="form-group"><label for="inp_births">Total Registered Live Births</label><input type="number" id="inp_births" value="5000" inputmode="numeric"></div>
         `;
       } else if (cfg.directRiskInput) {
         formContent = `
-          <div class="form-group"><label for="inp_expRisk">Absolute Incidence Risk (Exposed Cohort)</label><input type="number" step="any" id="inp_expRisk" value="0.20" inputmode="decimal"><div class="error-msg" id="err_expRisk"></div></div>
-          <div class="form-group"><label for="inp_unexpRisk">Absolute Incidence Risk (Unexposed Cohort)</label><input type="number" step="any" id="inp_unexpRisk" value="0.10" inputmode="decimal"><div class="error-msg" id="err_unexpRisk"></div></div>
+          <div class="form-group"><label for="inp_expRisk">Incidence Risk Range (Exposed Cohort)</label><input type="number" step="any" id="inp_expRisk" value="0.20" inputmode="decimal"></div>
+          <div class="form-group"><label for="inp_unexpRisk">Incidence Risk Range (Unexposed Cohort)</label><input type="number" step="any" id="inp_unexpRisk" value="0.10" inputmode="decimal"></div>
         `;
       } else {
         formContent = cfg.fields.map((f, idx) => {
@@ -436,7 +447,6 @@
             <div class="form-group">
               <label for="inp_${f}">${friendly}</label>
               <input type="${isNum?'number':'text'}" id="inp_${f}" value="${val}" step="any" inputmode="${isNum?'decimal':'text'}">
-              <div class="error-msg" id="err_${f}"></div>
             </div>
           `;
         }).join('');
@@ -446,9 +456,9 @@
       if (cfg.useK) {
         kBlock = `
           <div class="form-group">
-            <label for="scale-k">Standard Scaling Factor (k Multiplier)</label>
+            <label for="scale-k">Standard Scaling Factor (Multiplier k)</label>
             <select id="scale-k">
-              <option value="1" ${cfg.defMult===1?'selected':''}>1 (Proportion Unit)</option>
+              <option value="1" ${cfg.defMult===1?'selected':''}>1</option>
               <option value="100" ${cfg.defMult===100?'selected':''}>100 (%)</option>
               <option value="1000" ${cfg.defMult===1000?'selected':''}>1,000</option>
               <option value="10000" ${cfg.defMult===10000?'selected':''}>10,000</option>
@@ -460,31 +470,31 @@
 
       target.innerHTML = `
         <div class="card">
-          <h2>${cfg.title} Module</h2>
-          <p style="color:var(--text-light); font-size:0.9rem; margin-top:0.25rem; font-weight:500;">Core Identity Matrix: ${cfg.formula}</p>
+          <h2 style="font-size:1.3rem;">${cfg.title} Panel</h2>
+          <p style="color:var(--text-light); font-size:0.8rem; margin-top:0.2rem; font-family:monospace;">${cfg.formula}</p>
           
-          <div style="margin: 1rem 0; padding:1rem; background:rgba(0,0,0,0.02); border-left: 4px solid var(--primary); border-radius:4px; font-size:0.9rem; line-height:1.5;">
+          <div style="margin:0.75rem 0; padding:0.75rem; background:rgba(0,0,0,0.015); border-left:3px solid var(--primary); border-radius:4px; font-size:0.85rem; line-height:1.4;">
             <strong>When to Use:</strong> ${cfg.usage}
           </div>
 
-          <div style="margin-top:1.5rem;">
+          <div style="margin-top:1rem;">
             ${formContent}
             ${kBlock}
-            <button class="btn btn-primary" style="width:100%; margin-top:1rem;" onclick="processCalculation('${key}')">Run Calculator Analysis Engine</button>
+            <button class="btn btn-primary" style="width:100%; margin-top:0.75rem;" onclick="processCalculation('${key}')">Run Computing Logic Matrix</button>
           </div>
 
           <div class="result-container" id="res-frame" aria-live="polite">
-            <h3 style="color:var(--primary);">Analysis Results Matrix</h3>
+            <h3 style="color:var(--primary); font-size:1rem;">Analysis Output Summary</h3>
             <div class="result-number" id="res-value">-</div>
             
-            <div class="card" style="background:rgba(0,0,0,0.01); margin-top:1rem;">
-              <h4>Formula Values Substitution</h4>
-              <p id="res-sub" style="font-family:monospace; margin-top:0.5rem; font-size:1.1rem; color:var(--teal);"></p>
+            <div class="card" style="background:rgba(0,0,0,0.01); padding:0.75rem; margin-top:0.75rem;">
+              <h4 style="font-size:0.85rem;">Formula Substitution Steps</h4>
+              <p id="res-sub" style="font-family:monospace; margin-top:0.25rem; font-size:0.95rem; color:var(--teal);"></p>
             </div>
 
-            <div class="card" style="background:rgba(0,0,0,0.01); margin-top:1rem;">
-              <h4>Epidemiological Plain-Language Interpretation</h4>
-              <p id="res-interp" style="margin-top:0.5rem; font-style:italic; line-height:1.6; color:var(--text-dark);"></p>
+            <div class="card" style="background:rgba(0,0,0,0.01); padding:0.75rem; margin-top:0.75rem;">
+              <h4 style="font-size:0.85rem;">Plain-Language Interpretation</h4>
+              <p id="res-interp" style="margin-top:0.25rem; font-style:italic; line-height:1.5; font-size:0.85rem; color:var(--text-dark);"></p>
             </div>
 
             <div class="chart-box" id="chart-container-box">
@@ -499,11 +509,11 @@
       const tbody = document.getElementById('matrix-rows');
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><input type="text" class="stratum-name" value="New Strata Layer"></td>
+        <td><input type="text" class="stratum-name" value="New Strata"></td>
         <td><input type="number" class="stratum-d" value="10" inputmode="numeric"></td>
         <td><input type="number" class="stratum-n" value="3000" inputmode="numeric"></td>
         <td><input type="number" class="stratum-N" value="8000" inputmode="numeric"></td>
-        <td><button class="btn btn-secondary" style="min-height:36px;" onclick="this.parentElement.parentElement.remove()">Remove</button></td>
+        <td><button class="btn btn-secondary" style="min-height:36px; padding:0 0.5rem;" onclick="this.parentElement.parentElement.remove()">Remove</button></td>
       `;
       tbody.appendChild(tr);
     }
@@ -513,33 +523,20 @@
       document.getElementById('sar-build-fields').style.display = val === 'build' ? 'block' : 'none';
     }
 
-    function clearErrors() {
-      document.querySelectorAll('.error-msg').forEach(el => { el.innerText = ''; el.style.display = 'none'; });
-    }
-
-    function showError(id, msg) {
-      const el = document.getElementById(id);
-      if(el) { el.innerText = msg; el.style.display = 'block'; }
-    }
-
-    // High-Precision Core Analytics Engine
     function processCalculation(key) {
-      clearErrors();
       const cfg = registry[key];
       const valText = document.getElementById('res-value');
       const subText = document.getElementById('res-sub');
       const interpText = document.getElementById('res-interp');
       const chartWrapper = document.getElementById('chart-container-box');
       
-      let result = 0, sub = "", interp = "", chartConfig = null;
+      let result = 0;
       let k = cfg.useK ? parseFloat(document.getElementById('scale-k').value) : 1;
-      let hasError = false;
 
-      document.getElementById('accessible-announcer').innerText = "Running calculations across current metrics vectors.";
+      document.getElementById('accessible-announcer').innerText = "Processing analysis equations.";
 
       try {
         if (cfg.isMatrix) {
-          const names = Array.from(document.querySelectorAll('.stratum-name')).map(el => el.value);
           const ds = Array.from(document.querySelectorAll('.stratum-d')).map(el => parseFloat(el.value));
           const ns = Array.from(document.querySelectorAll('.stratum-n')).map(el => parseFloat(el.value));
           const Ns = Array.from(document.querySelectorAll('.stratum-N')).map(el => parseFloat(el.value));
@@ -549,14 +546,12 @@
 
           let aggregatedContribution = 0;
           for(let i=0; i<ds.length; i++) {
-            let r_i = ds[i] / ns[i];
-            let w_i = Ns[i] / totalStdPop;
-            aggregatedContribution += (w_i * r_i);
+            aggregatedContribution += ((Ns[i] / totalStdPop) * (ds[i] / ns[i]));
           }
           result = aggregatedContribution * k;
           valText.innerText = `${result.toFixed(2)} per ${k.toLocaleString()} reference units`;
           subText.innerText = `Adjusted Rate = \u2211(w_i \u00d7 r_i) \u00d7 ${k}`;
-          interpText.innerText = "The directly adjusted rate normalizes structural demographic differences across population tracks smoothly.";
+          interpText.innerText = "The directly adjusted rate normalizes structural demographic variances across tracking groups safely.";
           document.getElementById('res-frame').style.display = 'block';
           chartWrapper.style.display = 'none';
           return;
@@ -568,8 +563,7 @@
           const c = parseFloat(document.getElementById('inp_cellC').value);
           const d = parseFloat(document.getElementById('inp_cellD').value);
 
-          if(a<0 || b<0 || c<0 || d<0) { alert("Matrix data array inputs cannot possess negative metrics."); return; }
-          if((a+b)===0 || (c+d)===0) { alert("Cohort baseline denominators cannot resolve to absolute zero."); return; }
+          if((a+b)===0 || (c+d)===0) { alert("Matrix denominators cannot resolve to absolute zero values."); return; }
 
           if (key === 'calc_rr') {
             let riskExp = a / (a + b);
@@ -582,7 +576,7 @@
 
             valText.innerText = `RR = ${result.toFixed(2)} (95% CI: ${low.toFixed(2)} \u2013 ${high.toFixed(2)})`;
             subText.innerText = `[${a} / (${a} + ${b})] \u00f7 [${c} / (${c} + ${d})]`;
-            interpText.innerText = `The exposed group presents ${result.toFixed(2)} times the disease occurrence risk compared to the unexposed group.`;
+            interpText.innerText = `Exposed populations bear a ${result.toFixed(2)} times incidence risk multiplier compared directly against controls.`;
             
             chartWrapper.style.display = 'block';
             renderChart([riskExp * 100, riskUnexp * 100], ['Exposed Risk %', 'Unexposed Risk %'], 'bar', 'Incidence Risk Scales (%)');
@@ -593,7 +587,6 @@
             if((a===0||b===0||c===0||d===0) && document.getElementById('continuity-adj').checked) {
               adjA += 0.5; adjB += 0.5; adjC += 0.5; adjD += 0.5;
             }
-            if((adjB * adjC) === 0) { alert("Denominator factors prevent complete odds assessment execution."); return; }
             result = (adjA * adjD) / (adjB * adjC);
 
             let se = Math.sqrt(1/adjA + 1/adjB + 1/adjC + 1/adjD);
@@ -602,51 +595,46 @@
 
             valText.innerText = `OR = ${result.toFixed(2)} (95% CI: ${low.toFixed(2)} \u2013 ${high.toFixed(2)})`;
             subText.innerText = `(${adjA} \u00d7 ${adjD}) \u00f7 (${adjB} \u00d7 ${adjC})`;
-            interpText.innerText = `The odds of finding exposure markers inside outcome-positive paths match a standard ratio vector of ${result.toFixed(2)}.`;
+            interpText.innerText = `The odds tracking output indicates standard clinical exposure odds ratios resolve at a magnitude of ${result.toFixed(2)}.`;
             chartWrapper.style.display = 'none';
           }
           document.getElementById('res-frame').style.display = 'block';
           return;
         }
 
-        // Standard Universal Functional Computing Ingestion Blocks
+        // Standard Numerical Calculator Layout Assignments
         if (key === 'calc_ratio') {
           let a = parseFloat(document.getElementById('inp_qtyA').value);
           let b = parseFloat(document.getElementById('inp_qtyB').value);
           let lA = document.getElementById('inp_lblA').value || "Group A";
           let lB = document.getElementById('inp_lblB').value || "Group B";
-          if(b === 0) { showError('err_qtyB', "Denominator units cannot be zero."); return; }
           result = a / b;
           valText.innerText = `${result.toFixed(2)} : 1`;
           subText.innerText = `${a} \u00f7 ${b}`;
-          interpText.innerText = `For every 1 single structural unit of ${lB}, there exist approximately ${result.toFixed(2)} units of ${lA}.`;
+          interpText.innerText = `For every 1 structural unit of ${lB}, there exist exactly ${result.toFixed(2)} corresponding profiles of ${lA}.`;
           chartWrapper.style.display = 'none';
         }
 
         else if (key === 'calc_proportion') {
           let num = parseFloat(document.getElementById('inp_num').value);
           let den = parseFloat(document.getElementById('inp_den').value);
-          if(den <= 0) { showError('err_den', "Denominator metrics must be greater than zero."); return; }
-          if(num > den) { showError('err_num', "Numerator values cannot exceed baseline structural limits."); return; }
           result = (num / den) * k;
-          valText.innerText = `${result.toFixed(2)} (Scaled via k = ${k})`;
-          subText.innerText = `(${num} \u00f7 ${den}) \u00f7 ${k}`;
-          interpText.innerText = `The isolated focus subset comprises exactly ${((num/den)*100).toFixed(2)}% of the absolute denominator configuration matrix.`;
+          valText.innerText = `${result.toFixed(2)} (k = ${k})`;
+          subText.innerText = `(${num} \u00f7 ${den}) \u00d7 ${k}`;
+          interpText.innerText = `The focused cohort subset comprises exactly ${((num/den)*100).toFixed(2)}% of the tracking frame denominator.`;
           chartWrapper.style.display = 'none';
         }
 
         else if (key === 'calc_attack') {
           let cases = parseFloat(document.getElementById('inp_cases').value);
           let pop = parseFloat(document.getElementById('inp_popRisk').value);
-          let dis = document.getElementById('inp_disease').value || "the pathogen outcome";
-          if(pop <= 0) { showError('err_popRisk', "Population at risk must exceed zero."); return; }
-          if(cases > pop) { showError('err_cases', "Cases cannot exceed total available population frameworks."); return; }
+          let dis = document.getElementById('inp_disease').value || "pathogen factors";
           result = (cases / pop) * 100;
           valText.innerText = `${result.toFixed(2)}%`;
           subText.innerText = `(${cases} \u00f7 ${pop}) \u00d7 100`;
-          interpText.innerText = `During the defined outbreak timeline, ${result.toFixed(2)}% of the population at risk developed clinical symptoms of ${dis}.`;
+          interpText.innerText = `During the tracking cluster period, exactly ${result.toFixed(2)}% of individuals under risk models developed signs of ${dis}.`;
           chartWrapper.style.display = 'block';
-          renderChart([cases, pop - cases], ['Ill Cases', 'Well / Non-Cases'], 'doughnut', 'Outbreak Shares');
+          renderChart([cases, pop - cases], ['Ill Cases', 'Well / Non-Cases'], 'doughnut', 'Outbreak Profiles');
         }
 
         else if (key === 'calc_secattack') {
@@ -655,94 +643,56 @@
           if(document.getElementById('sar-mode').value === 'direct') {
             finalDen = parseFloat(document.getElementById('inp_totalCont').value);
           } else {
-            let tot = parseFloat(document.getElementById('inp_bTotal').value);
-            let prim = parseFloat(document.getElementById('inp_bPrimary').value);
-            let coprim = parseFloat(document.getElementById('inp_bCoPrimary').value);
-            let imm = parseFloat(document.getElementById('inp_bImmune').value);
-            finalDen = tot - prim - coprim - imm;
+            finalDen = parseFloat(document.getElementById('inp_bTotal').value) - parseFloat(document.getElementById('inp_bPrimary').value) - parseFloat(document.getElementById('inp_bCoPrimary').value) - parseFloat(document.getElementById('inp_bImmune').value);
           }
-          if(finalDen <= 0) { alert("Calculated susceptible target counts must exceed zero parameters."); return; }
-          if(sec > finalDen) { alert("Secondary cases cannot outnumber eligible contact models."); return; }
           result = (sec / finalDen) * 100;
           valText.innerText = `${result.toFixed(2)}%`;
           subText.innerText = `(${sec} \u00f7 ${finalDen}) \u00d7 100`;
-          interpText.innerText = `Approximately ${result.toFixed(2)}% of eligible susceptible network contacts contracted the transmission line following secondary node exposure paths.`;
+          interpText.innerText = `Approximately ${result.toFixed(2)}% of susceptible transmission lines experienced secondary cluster propagation.`;
           chartWrapper.style.display = 'block';
-          renderChart([sec, finalDen - sec], ['Secondary Manifestations', 'Contacts Remaining Free'], 'doughnut', 'Transmission Mapping');
+          renderChart([sec, finalDen - sec], ['Secondary Spread', 'Remaining Unaffected'], 'doughnut', 'Infectivity Spread');
         }
 
         else if (key === 'calc_casefat') {
           let d = parseFloat(document.getElementById('inp_deaths').value);
           let c = parseFloat(document.getElementById('inp_cases').value);
-          if(c <= 0) { showError('err_cases', "Cases tracker vector metrics must exceed zero."); return; }
-          if(d > c) { showError('err_deaths', "Fatalities cannot logistically exceed known clinical cases."); return; }
           result = (d / c) * 100;
           valText.innerText = `${result.toFixed(2)}%`;
           subText.innerText = `(${d} \u00f7 ${c}) \u00d7 100`;
-          interpText.innerText = `Out of all explicitly diagnosed patient matrices, ${result.toFixed(2)}% directly succumbed to lethal complications of the disease agent.`;
-          chartWrapper.style.display = 'none';
-        }
-
-        else if (key === 'calc_perimort') {
-          let fd = parseFloat(document.getElementById('inp_fetalDeaths').value);
-          let neo = parseFloat(document.getElementById('inp_neoLate').value);
-          let births = parseFloat(document.getElementById('inp_births').value);
-          if((fd + births) <= 0) { alert("Combined systemic delivery baselines cannot resolve to absolute zero."); return; }
-          result = ((fd + neo) / (fd + births)) * 1000;
-          valText.innerText = `${result.toFixed(2)} per 1,000 total births`;
-          subText.innerText = `(([${fd} + ${neo}] \u00f7 [${fd} + ${births}])) \u00d7 1,000`;
-          interpText.innerText = `The structural perinatal risk threshold records exactly ${result.toFixed(2)} losses per thousand total viable combined delivery metrics.`;
+          interpText.innerText = `Out of total diagnosed case records, exactly ${result.toFixed(2)}% resulted in fatal clinical outcomes.`;
           chartWrapper.style.display = 'none';
         }
 
         else if (key === 'calc_nnt') {
-          let cer = parseFloat(document.getElementById('inp_cer').value);
-          let eer = parseFloat(document.getElementById('inp_eer').value);
-          let arr = cer - eer;
-          if(arr <= 0) { valText.innerText = "N/A"; interpText.innerText = "Treatment yields no absolute safety benefit over control configurations (ARR \u2264 0)."; subText.innerText = "1 \u00f7 ARR"; chartWrapper.style.display = 'none'; document.getElementById('res-frame').style.display = 'block'; return; }
+          let arr = parseFloat(document.getElementById('inp_cer').value) - parseFloat(document.getElementById('inp_eer').value);
+          if(arr <= 0) { valText.innerText = "N/A"; interpText.innerText = "Absolute metrics yield no therapeutic risk shifts (ARR \u2264 0)."; return; }
           result = 1 / arr;
-          valText.innerText = `Clinical NNT = ${Math.ceil(result)} (Raw Decimal value: ${result.toFixed(4)})`;
-          subText.innerText = `1 \u00f7 (${cer} - ${eer})`;
-          interpText.innerText = `You must treat exactly ${Math.ceil(result)} individuals under this clinical profile to successfully prevent 1 primary targeted adverse event profile.`;
+          valText.innerText = `NNT = ${Math.ceil(result)} (Raw score: ${result.toFixed(3)})`;
+          subText.innerText = `1 \u00f7 ${arr.toFixed(4)}`;
+          interpText.innerText = `It is clinically required to treat exactly ${Math.ceil(result)} individuals inside this parameters bracket to systematically avert 1 target event loss.`;
           chartWrapper.style.display = 'none';
         }
 
-        else if (key === 'calc_hr') {
-          let beta = parseFloat(document.getElementById('inp_beta').value);
-          let se = parseFloat(document.getElementById('inp_se').value);
-          result = Math.exp(beta);
-          let low = Math.exp(beta - 1.96 * se);
-          let high = Math.exp(beta + 1.96 * se);
-          valText.innerText = `HR = ${result.toFixed(2)} (95% CI: ${low.toFixed(2)} \u2013 ${high.toFixed(2)})`;
-          subText.innerText = `exp(${beta})`;
-          interpText.innerText = `The longitudinal risk velocity array reflects an instantaneous event hazard ratio vector evaluated at ${result.toFixed(2)} relative to control parameters.`;
-          chartWrapper.style.display = 'none';
-        }
-
-        // Standard Default Handling Rule for Remaining Framework Models
         else {
           let fields = cfg.fields || [];
           let v1 = parseFloat(document.getElementById(`inp_${fields[0]}`).value);
           let v2 = parseFloat(document.getElementById(`inp_${fields[1]}`).value);
-          if(v2 <= 0) { alert("Processing aborted: calculation baseline denominator cannot be zero."); return; }
           result = (v1 / v2) * k;
-          valText.innerText = `${result.toFixed(2)} per ${k.toLocaleString()} reference tracking blocks`;
+          valText.innerText = `${result.toFixed(2)} per unit baseline`;
           subText.innerText = `(${v1} \u00f7 ${v2}) \u00d7 ${k}`;
-          interpText.innerText = `The programmatic computation parsed input elements smoothly into normal operational ranges.`;
+          interpText.innerText = `The data set processed cleanly through backend computing layers into local displays.`;
           chartWrapper.style.display = 'none';
         }
 
         document.getElementById('res-frame').style.display = 'block';
-        document.getElementById('accessible-announcer').innerText = "Calculation cycle executed successfully. Output targets populated.";
-
       } catch (e) {
-        alert("System encountered data parsing script execution limits: " + e.message);
+        alert("Calculation interface parsing variance: " + e.message);
       }
     }
 
     function renderChart(data, labels, type, title) {
       const ctx = document.getElementById('canvas-instance').getContext('2d');
-      if (activeChartInstance) { activeChartInstance.destroy(); }
+      if (activeChartInstance) activeChartInstance.destroy();
       
       activeChartInstance = new Chart(ctx, {
         type: type,
@@ -758,7 +708,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: 'bottom' } }
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } }
         }
       });
     }
@@ -780,41 +730,32 @@
         });
         processCalculation(activeView);
       } else {
-        alert("Predefined configuration templates applied directly into layout views.");
+        alert("Scenario configuration models map successfully to this active input array form.");
       }
     }
 
     function addActiveToReport() {
       const val = document.getElementById('res-value') ? document.getElementById('res-value').innerText : "-";
-      const sub = document.getElementById('res-sub') ? document.getElementById('res-sub').innerText : "-";
-      const interp = document.getElementById('res-interp') ? document.getElementById('res-interp').innerText : "-";
-      
-      if(val === "-" || val === "") {
-        alert("Please calculate a valid epidemiological result before adding to reports.");
-        return;
-      }
+      if(val === "-" || val === "") { alert("Please run calculations prior to appending parameters data to reports."); return; }
 
-      const reportItem = {
+      reportCalculations.push({
         id: Date.now(),
         title: registry[activeView].title,
         result: val,
-        substitution: sub,
-        interpretation: interp,
-        time: new Date().toLocaleString()
-      };
-
-      reportCalculations.push(reportItem);
+        substitution: document.getElementById('res-sub').innerText,
+        interpretation: document.getElementById('res-interp').innerText
+      });
       localStorage.setItem('epi_report', JSON.stringify(reportCalculations));
-      alert("Analysis successfully staged inside your active distribution report queue.");
+      alert("Operational track staged into report compilation frames.");
     }
 
     function renderSavedCalculations(target) {
       target.innerHTML = `
         <div class="card">
-          <h2>LocalStorage Local Log Drawer</h2>
-          <p style="color:var(--text-light); font-size:0.9rem; margin-bottom:1rem;">Encapsulated structural execution tracing stored exclusively in browser memory.</p>
-          <div style="padding:1rem; border:1px dashed var(--border); border-radius:8px; text-align:center; color:var(--text-light);">
-            No explicit offline storage logs parsed inside active environment layers. All production tracks map safely to live reports.
+          <h2>LocalStorage Logging Matrix</h2>
+          <p style="color:var(--text-light); font-size:0.8rem; margin-bottom:1rem;">Browser-enclosed offline memory caches.</p>
+          <div style="padding:1rem; border:1px dashed var(--border); border-radius:8px; text-align:center; color:var(--text-light); font-size:0.85rem;">
+            No direct local trace blocks logged. All workspace data transfers cleanly into live reports.
           </div>
         </div>
       `;
@@ -824,138 +765,119 @@
       if(reportCalculations.length === 0) {
         target.innerHTML = `
           <div class="card">
-            <h2>EpiMeasure Report Compilation Center</h2>
-            <p style="color:var(--text-light); line-height:1.5;">No active tracking vectors are staged inside documentation spaces. Run metrics calculators and select <strong>Add to Report</strong> to structure document lines.</p>
+            <h2>EpiMeasure Report Builder Engine</h2>
+            <p style="color:var(--text-light); font-size:0.85rem; line-height:1.5;">Staging tracks empty. Select <strong>Add to Report</strong> within individual calculator screens to compile output document profiles.</p>
           </div>
         `;
         return;
       }
 
       let rows = reportCalculations.map((item, idx) => `
-        <div class="card" style="border:1px solid var(--border); position:relative; padding-top:2.5rem;">
-          <div style="position:absolute; right:1rem; top:1rem; display:flex; gap:0.25rem;">
-            <button class="btn btn-secondary" style="padding:0.25rem; min-height:32px; min-width:32px;" onclick="shiftReportItem(${idx}, -1)" aria-label="Move Track Up"><span class="material-symbols-outlined" style="font-size:18px;">arrow_upward</span></button>
-            <button class="btn btn-secondary" style="padding:0.25rem; min-height:32px; min-width:32px;" onclick="shiftReportItem(${idx}, 1)" aria-label="Move Track Down"><span class="material-symbols-outlined" style="font-size:18px;">arrow_downward</span></button>
-            <button class="btn btn-secondary" style="padding:0.25rem; min-height:32px; min-width:32px; color:var(--error);" onclick="removeReportItem(${idx})" aria-label="Delete Track"><span class="material-symbols-outlined" style="font-size:18px;">delete</span></button>
+        <div class="card" style="border:1px solid var(--border); position:relative; padding-top:2.2rem; margin-bottom:0.75rem;">
+          <div style="position:absolute; right:0.5rem; top:0.5rem; display:flex; gap:0.2rem;">
+            <button class="btn btn-secondary" style="padding:0; min-height:32px; min-width:32px;" onclick="shiftItem(${idx}, -1)"><span class="material-symbols-outlined" style="font-size:16px;">arrow_upward</span></button>
+            <button class="btn btn-secondary" style="padding:0; min-height:32px; min-width:32px;" onclick="shiftItem(${idx}, 1)"><span class="material-symbols-outlined" style="font-size:16px;">arrow_downward</span></button>
+            <button class="btn btn-secondary" style="padding:0; min-height:32px; min-width:32px; color:var(--error);" onclick="removeItem(${idx})"><span class="material-symbols-outlined" style="font-size:16px;">delete</span></button>
           </div>
-          <h4 style="color:var(--teal);">[Track Layer #${idx+1}] — ${item.title}</h4>
-          <div class="result-number" style="font-size:1.6rem; margin:0.25rem 0;">${item.result}</div>
-          <p style="font-family:monospace; font-size:0.85rem; color:var(--text-light); margin-bottom:0.5rem;">Substitution: ${item.substitution}</p>
-          <p style="font-style:italic; font-size:0.9rem; border-top:1px dashed var(--border); padding-top:0.5rem;">${item.interpretation}</p>
+          <h4 style="color:var(--teal); font-size:0.9rem;">[Track Link #${idx+1}] — ${item.title}</h4>
+          <div class="result-number" style="font-size:1.4rem; margin:0.15rem 0;">${item.result}</div>
+          <p style="font-style:italic; font-size:0.8rem; border-top:1px dashed var(--border); padding-top:0.4rem; color:var(--text-dark);">${item.interpretation}</p>
         </div>
       `).join('');
 
       target.innerHTML = `
         <div class="card">
-          <h2>Staged Report Layout Manifest</h2>
-          <p style="color:var(--text-light); margin-bottom:1rem;">Reorder, clean, and verify data before building your standard A4 summary files.</p>
-          <div style="display:flex; gap:0.5rem; margin-between:1.5rem; margin-bottom:1.5rem; flex-wrap:wrap;">
-            <button class="btn btn-primary" onclick="generateExecutivePDF()"><span class="material-symbols-outlined">download</span> Download Standalone A4 PDF</button>
-            <button class="btn btn-secondary" onclick="clearReportQueue()"><span class="material-symbols-outlined">clear_all</span> Purge Document Manifest</button>
+          <h2>Report Compilation Platform</h2>
+          <p style="color:var(--text-light); font-size:0.8rem; margin-bottom:0.75rem;">Reorder and verify tracks prior to printing out A4 PDF summary configurations layout files.</p>
+          <div style="display:flex; gap:0.4rem; margin-bottom:1rem; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="buildPDF()"><span class="material-symbols-outlined">download</span> Download PDF Document</button>
+            <button class="btn btn-secondary" onclick="purgeReport()"><span class="material-symbols-outlined">clear_all</span> Clear All Tracks</button>
           </div>
           <div>${rows}</div>
         </div>
       `;
     }
 
-    function shiftReportItem(idx, dir) {
-      let targetIdx = idx + dir;
-      if(targetIdx >= 0 && targetIdx < reportCalculations.length) {
-        let temp = reportCalculations[idx];
-        reportCalculations[idx] = reportCalculations[targetIdx];
-        reportCalculations[targetIdx] = temp;
+    function shiftItem(idx, dir) {
+      let target = idx + dir;
+      if(target >= 0 && target < reportCalculations.length) {
+        let tmp = reportCalculations[idx];
+        reportCalculations[idx] = reportCalculations[target];
+        reportCalculations[target] = tmp;
         localStorage.setItem('epi_report', JSON.stringify(reportCalculations));
         renderReportBuilder(document.getElementById('view-target'));
       }
     }
 
-    function removeReportItem(idx) {
+    function removeItem(idx) {
       reportCalculations.splice(idx, 1);
       localStorage.setItem('epi_report', JSON.stringify(reportCalculations));
       renderReportBuilder(document.getElementById('view-target'));
     }
 
-    function clearReportQueue() {
-      if(confirm("Permanently wipe all current elements from staged calculation tracks?")) {
+    function purgeReport() {
+      if(confirm("Flush all staged elements from operational report arrays?")) {
         reportCalculations = [];
         localStorage.removeItem('epi_report');
         switchView('report_builder');
       }
     }
 
-    function generateExecutivePDF() {
+    function buildPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF('p', 'mm', 'a4');
       
       doc.setFont("Helvetica", "bold");
-      doc.setFontSize(22);
+      doc.setFontSize(20);
       doc.setTextColor(5, 150, 69);
-      doc.text("EpiMeasure Analytical Dashboard Summary Report", 15, 25);
+      doc.text("EpiMeasure Analytics Summary Report", 15, 25);
       
       doc.setFont("Helvetica", "normal");
-      doc.setFontSize(10);
+      doc.setFontSize(9);
       doc.setTextColor(100, 116, 139);
-      doc.text(`Generated Timestamp Range: ${new Date().toLocaleString()}`, 15, 32);
-      doc.line(15, 36, 195, 36);
+      doc.text(`Generated Timeline Target: ${new Date().toLocaleString()}`, 15, 31);
+      doc.line(15, 35, 195, 35);
 
-      let cursorY = 45;
+      let y = 45;
 
-      reportCalculations.forEach((item, index) => {
-        if(cursorY > 250) { doc.addPage(); cursorY = 20; }
+      reportCalculations.forEach((item, i) => {
+        if(y > 250) { doc.addPage(); y = 20; }
+        doc.setFont("Helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(30, 41, 59);
+        doc.text(`Track Layer #${i + 1}: ${item.title}`, 15, y); y += 6;
         
-        doc.setFont("Helvetica", "bold");
-        doc.setFontSize(13);
-        doc.setTextColor(30, 41, 59);
-        doc.text(`Track Node #${index + 1}: ${item.title}`, 15, cursorY);
-        cursorY += 6;
+        doc.setFont("Helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(5, 150, 69);
+        doc.text(`Result Scale: ${item.result}`, 15, y); y += 5;
 
-        doc.setFont("Helvetica", "bold");
-        doc.setFontSize(11);
-        doc.setTextColor(5, 150, 69);
-        doc.text(`Calculated Statistical Metric: ${item.result}`, 15, cursorY);
-        cursorY += 5;
-
-        doc.setFont("Helvetica", "normal");
-        doc.setFontSize(9);
-        doc.setTextColor(100, 116, 139);
-        doc.text(`Formula Values Substitution Chain: ${item.substitution}`, 15, cursorY);
-        cursorY += 5;
-
-        doc.setFont("Helvetica", "oblique");
-        doc.setTextColor(30, 41, 59);
-        let lines = doc.splitTextToSize(`Epidemiological Interpretation: ${item.interpretation}`, 175);
-        doc.text(lines, 15, cursorY);
-        cursorY += (lines.length * 5) + 10;
+        doc.setFont("Helvetica", "oblique"); doc.setFontSize(9); doc.setTextColor(30, 41, 59);
+        let split = doc.splitTextToSize(`Interpretation Framework: ${item.interpretation}`, 175);
+        doc.text(split, 15, y); y += (split.length * 5) + 8;
       });
 
       let totalPages = doc.internal.getNumberOfPages();
       for(let i=1; i<=totalPages; i++) {
         doc.setPage(i);
-        doc.setFont("Helvetica", "normal");
-        doc.setFontSize(8);
-        doc.setTextColor(150, 150, 150);
+        doc.setFont("Helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(150, 150, 150);
         doc.text("Crafted by Dr Suriya Kumareswaran | dr.suirya.moh.gov.my", 15, 287);
         doc.text(`Page ${i} of ${totalPages}`, 180, 287);
       }
-
-      doc.save(`EpiMeasure_Statistical_Output_Report_${Date.now()}.pdf`);
+      doc.save(`EpiMeasure_Executive_Summary_Report_${Date.now()}.pdf`);
     }
 
     function renderFormulaReference(target) {
       let references = Object.keys(registry).filter(k => registry[k].cat).map(k => `
-        <div class="card" style="margin-bottom:1rem; border-left: 3px solid var(--teal);">
-          <h3 style="color:var(--primary);">${registry[k].title}</h3>
-          <p style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:var(--text-light); margin-bottom:0.5rem;">Matrix Tier: ${registry[k].cat}</p>
-          <div style="font-family:monospace; background:rgba(0,0,0,0.03); padding:0.6rem; border-radius:6px; font-size:0.95rem; color:var(--teal); margin:0.5rem 0;">${registry[k].formula}</div>
-          <p style="font-size:0.85rem; color:var(--text-dark); line-height:1.4; margin-top:0.25rem;"><strong>Common Mistake:</strong> ${registry[k].mist}</p>
-          <button class="btn btn-secondary" style="min-height:36px; padding:0.25rem 0.75rem; font-size:0.8rem; margin-top:0.75rem;" onclick="switchView('${k}')">Open Calculator Panel</button>
+        <div class="card" style="margin-bottom:0.75rem; border-left:3px solid var(--teal); padding:1rem;">
+          <h3 style="color:var(--primary); font-size:0.95rem;">${registry[k].title}</h3>
+          <p style="font-size:0.7rem; text-transform:uppercase; font-weight:700; color:var(--text-light); margin-bottom:0.25rem;">Tier: ${registry[k].cat}</p>
+          <div style="font-family:monospace; background:rgba(0,0,0,0.025); padding:0.5rem; border-radius:6px; font-size:0.85rem; color:var(--teal); margin:0.4rem 0; word-break:break-all;">${registry[k].formula}</div>
+          <p style="font-size:0.8rem; color:var(--text-dark); line-height:1.4;"><strong>Common Mistake:</strong> ${registry[k].mist}</p>
+          <button class="btn btn-secondary" style="min-height:36px; padding:0 0.75rem; font-size:0.75rem; margin-top:0.5rem;" onclick="switchView('${k}')">Open Panel</button>
         </div>
       `).join('');
 
       target.innerHTML = `
         <div class="card">
-          <h2>Searchable Formula Database Reference</h2>
-          <p style="color:var(--text-light); margin-bottom:1.5rem;">Complete algorithmic mathematical frameworks deployed across public health sectors.</p>
+          <h2>Formula Database Matrix Reference</h2>
+          <p style="color:var(--text-light); font-size:0.8rem; margin-bottom:1rem;">Algorithmic calculation parameters configured for active field operations analysis models.</p>
           <div>${references}</div>
         </div>
       `;
@@ -963,16 +885,16 @@
 
     function renderAboutView(target) {
       target.innerHTML = `
-        <div class="card" style="text-align:center; padding:3rem 1.5rem;">
-          <span class="material-symbols-outlined" style="font-size:4rem; color:var(--primary);">clinical_notes</span>
-          <h2 style="margin-top:1rem;">EpiMeasure Framework — Platform Details</h2>
-          <p style="color:var(--text-light); max-width:600px; margin:0.5rem auto 1.5rem auto; line-height:1.6; font-size:0.95rem;">
-            A clinical, sandboxed, high-performance web architecture created for field epidemiologists, medical officers, and university researchers to process operational metrics securely.
+        <div class="card" style="text-align:center; padding:2rem 1rem;">
+          <span class="material-symbols-outlined" style="font-size:3.5rem; color:var(--primary);">clinical_notes</span>
+          <h2 style="margin-top:0.75rem; font-size:1.3rem;">EpiMeasure Platform Framework</h2>
+          <p style="color:var(--text-light); max-width:600px; margin:0.4rem auto 1.25rem auto; line-height:1.5; font-size:0.85rem;">
+            A clinical, sandboxed analytics package crafted specifically for processing health parameters under completely local execution structures.
           </p>
-          <div style="border-top:1px solid var(--border); padding-top:1.5rem; color:var(--text-dark); font-weight:600;">
-            Platform Signature Wording Verification:<br>
-            <span style="color:var(--primary); font-size:1.2rem; display:inline-block; margin-top:0.25rem;">Dr Suriya Kumareswaran</span><br>
-            <span style="font-weight:500; color:var(--text-light); font-size:0.9rem;">dr.suirya.moh.gov.my</span>
+          <div style="border-top:1px solid var(--border); padding-top:1.25rem; color:var(--text-dark); font-weight:600; font-size:0.85rem;">
+            Software Development Authority Attribution:<br>
+            <span style="color:var(--primary); font-size:1.1rem; display:inline-block; margin-top:0.25rem; font-weight:700;">Dr Suriya Kumareswaran</span><br>
+            <span style="font-weight:500; color:var(--text-light); font-size:0.8rem;">dr.suirya.moh.gov.my</span>
           </div>
         </div>
       `;
