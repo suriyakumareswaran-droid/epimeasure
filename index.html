@@ -55,7 +55,7 @@
     .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.55rem 0.75rem; border-radius: 8px; color: var(--text-dark); text-decoration: none; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
     .nav-item:hover, .nav-item.active { background: var(--primary); color: white; }
 
-    /* Top Action Navigation Bars & Premium Touch Target Upgrades */
+    /* Top Action Navigation Bars & Touch Target Buttons */
     .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 0.75rem; background: var(--card-bg); padding: 0.75rem 1rem; border-radius: var(--radius); border: 1px solid var(--border); backdrop-filter: blur(10px); }
     
     .hamburger-btn { display: none; align-items: center; gap: 0.4rem; background: var(--primary); color: white; border: none; padding: 0.5rem 0.9rem; border-radius: 8px; font-weight: 700; min-height: 44px; font-size: 0.9rem; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 4px rgba(5,150,105,0.2); }
@@ -102,7 +102,7 @@
     .footer { font-size: 0.75rem; color: var(--text-light); border-top: 1px solid var(--border); padding-top: 0.75rem; margin-top: auto; font-weight: 500; line-height: 1.4; }
     .sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); backdrop-filter: blur(10px); border-top: 1px solid var(--border); padding: 0.6rem 0.8rem; z-index: 90; gap: 0.4rem; }
 
-    /* Mobile Responsive Viewport Adapters */
+    /* Mobile Responsive Viewport Overrides */
     @media (max-width: 1024px) {
       #sidebar { transform: translateX(-100%); }
       #sidebar.open { transform: translateX(0); }
@@ -112,7 +112,7 @@
       .top-actions { display: none; }
     }
 
-    /* Target Optimization Rules for Compact Phone Screens */
+    /* Target Optimization Rules for Phone Screens */
     @media (max-width: 480px) {
       #main-content { padding: 0.5rem; padding-bottom: 6.5rem; }
       .top-bar { margin-bottom: 1rem; padding: 0.5rem; gap: 0.5rem; }
@@ -266,7 +266,7 @@
         <button class="btn btn-secondary" onclick="loadActiveScenario()"><span class="material-symbols-outlined">deployed_code</span>Load Example</button>
         <button class="btn btn-secondary" onclick="resetActiveForm()"><span class="material-symbols-outlined">restart_alt</span>Reset</button>
         <button class="btn btn-primary" onclick="addActiveToReport()"><span class="material-symbols-outlined">note_add</span>Add to Report</button>
-        <button class="btn btn-secondary" onclick="toggleTheme()" aria-label="Toggle Layout Light Dark Theme"><span class="material-symbols-outlined">dark_mode</span></button>
+        <button class="btn btn-secondary" onclick="toggleTheme()" aria-label="Toggle Screen Theme Profile"><span class="material-symbols-outlined">dark_mode</span></button>
       </div>
     </header>
 
@@ -277,9 +277,9 @@
 
   <div class="sticky-bar" id="mobile-action-tray">
     <button class="btn btn-primary" style="flex:1; font-weight:700;" onclick="triggerActiveCalculation()">Calculate</button>
-    <button class="btn btn-secondary" onclick="addActiveToReport()" aria-label="Add Active Module to Report Log"><span class="material-symbols-outlined">note_add</span></button>
-    <button class="btn btn-secondary" onclick="resetActiveForm()" aria-label="Reset Form Metrics Input Fields"><span class="material-symbols-outlined">restart_alt</span></button>
-    <button class="btn btn-secondary" onclick="toggleTheme()" aria-label="Toggle Screen Theme Profile Layout"><span class="material-symbols-outlined">dark_mode</span></button>
+    <button class="btn btn-secondary" onclick="addActiveToReport()" aria-label="Add Active Module to Report"><span class="material-symbols-outlined">note_add</span></button>
+    <button class="btn btn-secondary" onclick="resetActiveForm()" aria-label="Reset Form Input Fields"><span class="material-symbols-outlined">restart_alt</span></button>
+    <button class="btn btn-secondary" onclick="toggleTheme()" aria-label="Toggle Screen Layout Theme"><span class="material-symbols-outlined">dark_mode</span></button>
   </div>
 
   <script>
@@ -287,7 +287,7 @@
     let activeChartInstance = null;
     let reportCalculations = JSON.parse(localStorage.getItem('epi_report')) || [];
 
-    // Master Architectural Specification Catalog Data Dictionary Registry [cite: 110-141]
+    // Master Software Calculator Catalog Framework
     const registry = {
       dashboard: { title: "EpiMeasure Dashboard" },
       saved_calc: { title: "Saved Calculations" },
@@ -356,7 +356,6 @@
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       document.getElementById('sidebar').classList.remove('open');
       
-      // Update header jump drop-down selection box to stay in matching alignment state
       const selector = document.getElementById('mobile-calc-selector');
       if (selector) selector.value = viewKey;
       
@@ -377,21 +376,21 @@
     function renderDashboard(target) {
       target.innerHTML = `
         <div class="card" style="background: linear-gradient(135deg, rgba(5,150,105,0.08), rgba(13,148,136,0.08)); border: 1px solid var(--primary);">
-          <h1 style="font-size:1.5rem; margin-bottom:0.4rem; color:var(--primary);">Calculate epidemiological measures clearly, accurately, and confidently. [cite: 1049]</h1>
-          <p style="color:var(--text-light); max-width:700px; font-size:0.9rem; line-height:1.5;">Enter your data, review the formula and calculation steps, interpret the result, and export only the analyses you need. [cite: 1051]</p>
+          <h1 style="font-size:1.5rem; margin-bottom:0.4rem; color:var(--primary);">Calculate epidemiological measures clearly, accurately, and confidently.</h1>
+          <p style="color:var(--text-light); max-width:700px; font-size:0.9rem; line-height:1.5;">Enter your data, review the formula and calculation steps, interpret the result, and export only the analyses you need.</p>
         </div>
         <div class="card" style="border-left: 4px solid var(--warning); padding:1rem;">
           <h3 style="color:var(--warning); display:flex; align-items:center; gap:0.4rem; font-size:0.95rem;"><span class="material-symbols-outlined" style="font-size:20px;">gpp_maybe</span> Data Privacy Disclosure</h3>
-          <p style="font-size:0.85rem; margin-top:0.3rem; color:var(--text-dark); line-height:1.4;">EpiMeasure performs calculations in your browser. Do not enter names, identity numbers, medical-record numbers, or other identifiable patient information. [cite: 1107]</p>
+          <p style="font-size:0.85rem; margin-top:0.3rem; color:var(--text-dark); line-height:1.4;">EpiMeasure performs calculations in your browser. Do not enter names, identity numbers, medical-record numbers, or other identifiable patient information.</p>
         </div>
         <div class="dashboard-grid">
           <div class="card" style="cursor:pointer; border-top: 3px solid var(--teal);" onclick="switchView('calc_attack')">
             <h3 style="color:var(--teal); font-size:0.95rem;">📊 Attack Rate Quick-Access</h3>
-            <p style="font-size:0.8rem; color:var(--text-light); margin-top:0.4rem;">Instantly trace pathogen clusters and compute outbreak incidence patterns cleanly. [cite: 1056]</p>
+            <p style="font-size:0.8rem; color:var(--text-light); margin-top:0.4rem;">Instantly trace pathogen clusters and compute outbreak incidence patterns cleanly.</p>
           </div>
           <div class="card" style="cursor:pointer; border-top: 3px solid var(--primary);" onclick="switchView('report_builder')">
             <h3 style="color:var(--primary); font-size:0.95rem;">📋 Active Staged Reports</h3>
-            <p style="font-size:0.8rem; color:var(--text-light); margin-top:0.4rem;"><span id="dash-rep-count" style="font-weight:700; font-size:1rem;">${reportCalculations.length}</span> analytical tracks configured for presentation output formats. [cite: 1058]</p>
+            <p style="font-size:0.8rem; color:var(--text-light); margin-top:0.4rem;"><span id="dash-rep-count" style="font-weight:700; font-size:1rem;">${reportCalculations.length}</span> analytical tracks configured for presentation output formats.</p>
           </div>
         </div>
       `;
@@ -425,7 +424,7 @@
               </tbody>
             </table>
           </div>
-          <button class="btn btn-secondary" style="margin-bottom:1rem; min-height:38px;" onclick="addMatrixRow()">+ Add Stratum Row [cite: 613]</button>
+          <button class="btn btn-secondary" style="margin-bottom:1rem; min-height:38px;" onclick="addMatrixRow()">+ Add Stratum Row</button>
         `;
       } else if (cfg.matrix2x2) {
         formContent = `
@@ -454,46 +453,46 @@
           </div>
           <div id="or-correction" style="display:${key==='calc_or'?'block':'none'}; margin:0.4rem 0;">
             <label style="display:inline-flex; align-items:center; gap:0.4rem; font-weight:normal; cursor:pointer;">
-              <input type="checkbox" id="continuity-adj"> Apply 0.5 continuity correction if zero cells are observed [cite: 683]
+              <input type="checkbox" id="continuity-adj"> Apply 0.5 continuity correction if zero cells are observed
             </label>
           </div>
         `;
       } else if (cfg.modeToggle) {
         formContent = `
           <div class="form-group">
-            <label for="sar-mode">Denominator Configuration Mode [cite: 418, 430]</label>
+            <label for="sar-mode">Denominator Configuration Mode</label>
             <select id="sar-mode" onchange="toggleSarFields(this.value)">
-              <option value="direct">Mode A: Enter eligible contacts directly [cite: 431]</option>
-              <option value="build">Mode B: Compute denominator from matrix parameters [cite: 433]</option>
+              <option value="direct">Mode A: Enter eligible contacts directly</option>
+              <option value="build">Mode B: Compute denominator from matrix parameters</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="inp_secCases">Secondary Clinical Cases Count [cite: 402]</label>
+            <label for="inp_secCases">Secondary Clinical Cases Count</label>
             <input type="number" id="inp_secCases" value="3" inputmode="numeric">
           </div>
           <div id="sar-direct-fields">
             <div class="form-group">
-              <label for="inp_totalCont">Eligible Susceptible Contacts Pool [cite: 403]</label>
+              <label for="inp_totalCont">Eligible Susceptible Contacts Pool</label>
               <input type="number" id="inp_totalCont" value="9" inputmode="numeric">
             </div>
           </div>
           <div id="sar-build-fields" style="display:none;">
-            <div class="form-group"><label for="inp_bTotal">Total Contact Network Size [cite: 420]</label><input type="number" id="inp_bTotal" value="12" inputmode="numeric"></div>
-            <div class="form-group"><label for="inp_bPrimary">Primary Index Patient Count [cite: 421]</label><input type="number" id="inp_bPrimary" value="2" inputmode="numeric"></div>
-            <div class="form-group"><label for="inp_bCoPrimary">Co-Primary Clusters Observed [cite: 422]</label><input type="number" id="inp_bCoPrimary" value="1" inputmode="numeric"></div>
-            <div class="form-group"><label for="inp_bImmune">Immune / Pre-vaccinated Counter [cite: 423]</label><input type="number" id="inp_bImmune" value="0" inputmode="numeric"></div>
+            <div class="form-group"><label for="inp_bTotal">Total Contact Network Size</label><input type="number" id="inp_bTotal" value="12" inputmode="numeric"></div>
+            <div class="form-group"><label for="inp_bPrimary">Primary Index Patient Count</label><input type="number" id="inp_bPrimary" value="2" inputmode="numeric"></div>
+            <div class="form-group"><label for="inp_bCoPrimary">Co-Primary Clusters Observed</label><input type="number" id="inp_bCoPrimary" value="1" inputmode="numeric"></div>
+            <div class="form-group"><label for="inp_bImmune">Immune / Pre-vaccinated Counter</label><input type="number" id="inp_bImmune" value="0" inputmode="numeric"></div>
           </div>
         `;
       } else if (cfg.perinatField) {
         formContent = `
-          <div class="form-group"><label for="inp_fetalDeaths">Fetal Deaths / Stillbirths Counter [cite: 808]</label><input type="number" id="inp_fetalDeaths" value="15" inputmode="numeric"></div>
-          <div class="form-group"><label for="inp_neoLate">Early Neonatal Deaths (&lt;7 Days) [cite: 810]</label><input type="number" id="inp_neoLate" value="10" inputmode="numeric"></div>
-          <div class="form-group"><label for="inp_births">Total Registered Live Births [cite: 812]</label><input type="number" id="inp_births" value="5000" inputmode="numeric"></div>
+          <div class="form-group"><label for="inp_fetalDeaths">Fetal Deaths / Stillbirths Counter</label><input type="number" id="inp_fetalDeaths" value="15" inputmode="numeric"></div>
+          <div class="form-group"><label for="inp_neoLate">Early Neonatal Deaths (&lt;7 Days)</label><input type="number" id="inp_neoLate" value="10" inputmode="numeric"></div>
+          <div class="form-group"><label for="inp_births">Total Registered Live Births</label><input type="number" id="inp_births" value="5000" inputmode="numeric"></div>
         `;
       } else if (cfg.directRiskInput) {
         formContent = `
-          <div class="form-group"><label for="inp_expRisk">Incidence Risk Range (Exposed Cohort) [cite: 690]</label><input type="number" step="any" id="inp_expRisk" value="0.20" inputmode="decimal"></div>
-          <div class="form-group"><label for="inp_unexpRisk">Incidence Risk Range (Unexposed Cohort) [cite: 691]</label><input type="number" step="any" id="inp_unexpRisk" value="0.10" inputmode="decimal"></div>
+          <div class="form-group"><label for="inp_expRisk">Incidence Risk Range (Exposed Cohort)</label><input type="number" step="any" id="inp_expRisk" value="0.20" inputmode="decimal"></div>
+          <div class="form-group"><label for="inp_unexpRisk">Incidence Risk Range (Unexposed Cohort)</label><input type="number" step="any" id="inp_unexpRisk" value="0.10" inputmode="decimal"></div>
         `;
       } else {
         formContent = cfg.fields.map((f, idx) => {
@@ -513,13 +512,13 @@
       if (cfg.useK) {
         kBlock = `
           <div class="form-group">
-            <label for="scale-k">Standard Scaling Factor (Multiplier k) [cite: 852]</label>
+            <label for="scale-k">Standard Scaling Factor (Multiplier k)</label>
             <select id="scale-k">
-              <option value="1">1 [cite: 853]</option>
-              <option value="100" ${cfg.defMult===100?'selected':''}>100 (%) [cite: 854]</option>
-              <option value="1000" ${cfg.defMult===1000?'selected':''}>1,000 [cite: 855]</option>
-              <option value="10000" ${cfg.defMult===10000?'selected':''}>10,000 [cite: 856]</option>
-              <option value="100000" ${cfg.defMult===100000?'selected':''}>100,000 [cite: 857]</option>
+              <option value="1">1</option>
+              <option value="100" ${cfg.defMult===100?'selected':''}>100 (%)</option>
+              <option value="1000" ${cfg.defMult===1000?'selected':''}>1,000</option>
+              <option value="10000" ${cfg.defMult===10000?'selected':''}>10,000</option>
+              <option value="100000" ${cfg.defMult===100000?'selected':''}>100,000</option>
             </select>
           </div>
         `;
@@ -527,30 +526,30 @@
 
       target.innerHTML = `
         <div class="card">
-          <h2 style="font-size:1.3rem;">${cfg.title} Panel [cite: 302]</h2>
-          <p style="color:var(--text-light); font-size:0.8rem; margin-top:0.2rem; font-family:monospace;">[cite: 305] ${cfg.formula}</p>
+          <h2 style="font-size:1.3rem;">${cfg.title} Panel</h2>
+          <p style="color:var(--text-light); font-size:0.8rem; margin-top:0.2rem; font-family:monospace;"> ${cfg.formula}</p>
           
           <div style="margin:0.75rem 0; padding:0.75rem; background:rgba(0,0,0,0.015); border-left:3px solid var(--primary); border-radius:4px; font-size:0.85rem; line-height:1.4;">
-            <strong>When to Use:</strong> [cite: 304] ${cfg.usage}
+            <strong>When to Use:</strong> ${cfg.usage}
           </div>
 
           <div style="margin-top:1rem;">
             ${formContent}
             ${kBlock}
-            <button class="btn btn-primary" style="width:100%; margin-top:0.75rem;" onclick="processCalculation('${key}')">Run Computing Logic Matrix [cite: 310]</button>
+            <button class="btn btn-primary" style="width:100%; margin-top:0.75rem;" onclick="processCalculation('${key}')">Run Computing Logic Matrix</button>
           </div>
 
           <div class="result-container" id="res-frame" aria-live="polite">
-            <h3 style="color:var(--primary); font-size:1rem;">Analysis Output Summary [cite: 311]</h3>
+            <h3 style="color:var(--primary); font-size:1rem;">Analysis Output Summary</h3>
             <div class="result-number" id="res-value">-</div>
             
             <div class="card" style="background:rgba(0,0,0,0.01); padding:0.75rem; margin-top:0.75rem;">
-              <h4 style="font-size:0.85rem;">Formula Substitution Steps [cite: 312]</h4>
+              <h4 style="font-size:0.85rem;">Formula Substitution Steps</h4>
               <p id="res-sub" style="font-family:monospace; margin-top:0.25rem; font-size:0.95rem; color:var(--teal);"></p>
             </div>
 
             <div class="card" style="background:rgba(0,0,0,0.01); padding:0.75rem; margin-top:0.75rem;">
-              <h4 style="font-size:0.85rem;">Plain-Language Interpretation [cite: 314]</h4>
+              <h4 style="font-size:0.85rem;">Plain-Language Interpretation</h4>
               <p id="res-interp" style="margin-top:0.25rem; font-style:italic; line-height:1.5; font-size:0.85rem; color:var(--text-dark);"></p>
             </div>
 
@@ -590,7 +589,7 @@
       let result = 0;
       let k = cfg.useK ? parseFloat(document.getElementById('scale-k').value) : 1;
 
-      document.getElementById('accessible-announcer').innerText = "Processing analysis equations. [cite: 1095]";
+      document.getElementById('accessible-announcer').innerText = "Processing analysis equations.";
 
       try {
         if (cfg.isMatrix) {
@@ -603,7 +602,7 @@
 
           let aggregatedContribution = 0;
           for(let i=0; i<ds.length; i++) {
-            aggregatedContribution += ((Ns[i] / totalStdPop) * (ds[i] / ns[i])); // [cite: 605, 606, 607]
+            aggregatedContribution += ((Ns[i] / totalStdPop) * (ds[i] / ns[i]));
           }
           result = aggregatedContribution * k;
           valText.innerText = `${result.toFixed(2)} per ${k.toLocaleString()} reference units`;
@@ -623,32 +622,32 @@
           if((a+b)===0 || (c+d)===0) { alert("Matrix denominators cannot resolve to absolute zero values."); return; }
 
           if (key === 'calc_rr') {
-            let riskExp = a / (a + b); // [cite: 656]
-            let riskUnexp = c / (c + d); // [cite: 658]
-            result = riskExp / riskUnexp; // [cite: 654]
+            let riskExp = a / (a + b);
+            let riskUnexp = c / (c + d);
+            result = riskExp / riskUnexp;
 
-            let se = Math.sqrt((1/a) - (1/(a+b)) + (1/c) - (1/(c+d))); // [cite: 664]
-            let low = Math.exp(Math.log(result) - 1.96 * se); // [cite: 671]
-            let high = Math.exp(Math.log(result) + 1.96 * se); // [cite: 671]
+            let se = Math.sqrt((1/a) - (1/(a+b)) + (1/c) - (1/(c+d)));
+            let low = Math.exp(Math.log(result) - 1.96 * se);
+            let high = Math.exp(Math.log(result) + 1.96 * se);
 
             valText.innerText = `RR = ${result.toFixed(2)} (95% CI: ${low.toFixed(2)} \u2013 ${high.toFixed(2)})`;
             subText.innerText = `[${a} / (${a} + ${b})] \u00f7 [${c} / (${c} + ${d})]`;
-            interpText.innerText = `Exposed populations bear a ${result.toFixed(2)} times incidence risk multiplier compared directly against controls. [cite: 661]`;
+            interpText.innerText = `Exposed populations bear a ${result.toFixed(2)} times incidence risk multiplier compared directly against controls.`;
             
             chartWrapper.style.display = 'block';
-            renderChart([riskExp * 100, riskUnexp * 100], ['Exposed Risk %', 'Unexposed Risk %'], 'bar', 'Incidence Risk Scales (%)'); // [cite: 1032]
+            renderChart([riskExp * 100, riskUnexp * 100], ['Exposed Risk %', 'Unexposed Risk %'], 'bar', 'Incidence Risk Scales (%)');
           }
           
           if (key === 'calc_or') {
             let adjA = a, adjB = b, adjC = c, adjD = d;
             if((a===0||b===0||c===0||d===0) && document.getElementById('continuity-adj').checked) {
-              adjA += 0.5; adjB += 0.5; adjC += 0.5; adjD += 0.5; // [cite: 683]
+              adjA += 0.5; adjB += 0.5; adjC += 0.5; adjD += 0.5;
             }
-            result = (adjA * adjD) / (adjB * adjC); // [cite: 677]
+            result = (adjA * adjD) / (adjB * adjC);
 
-            let se = Math.sqrt(1/adjA + 1/adjB + 1/adjC + 1/adjD); // [cite: 680]
-            let low = Math.exp(Math.log(result) - 1.96 * se); // [cite: 682]
-            let high = Math.exp(Math.log(result) + 1.96 * se); // [cite: 682]
+            let se = Math.sqrt(1/adjA + 1/adjB + 1/adjC + 1/adjD);
+            let low = Math.exp(Math.log(result) - 1.96 * se);
+            let high = Math.exp(Math.log(result) + 1.96 * se);
 
             valText.innerText = `OR = ${result.toFixed(2)} (95% CI: ${low.toFixed(2)} \u2013 ${high.toFixed(2)})`;
             subText.innerText = `(${adjA} \u00d7 ${adjD}) \u00f7 (${adjB} \u00d7 ${adjC})`;
@@ -659,23 +658,22 @@
           return;
         }
 
-        // Numerical Computing Layer Evaluation Layout Rules
         if (key === 'calc_ratio') {
           let a = parseFloat(document.getElementById('inp_qtyA').value);
           let b = parseFloat(document.getElementById('inp_qtyB').value);
           let lA = document.getElementById('inp_lblA').value || "Group A";
           let lB = document.getElementById('inp_lblB').value || "Group B";
-          result = a / b; // [cite: 468]
-          valText.innerText = `${result.toFixed(2)} : 1`; // [cite: 476]
+          result = a / b;
+          valText.innerText = `${result.toFixed(2)} : 1`;
           subText.innerText = `${a} \u00f7 ${b}`;
-          interpText.innerText = `For every 1 structural unit of ${lB}, there exist exactly ${result.toFixed(2)} corresponding profiles of ${lA}. [cite: 477]`;
+          interpText.innerText = `For every 1 structural unit of ${lB}, there exist exactly ${result.toFixed(2)} corresponding profiles of ${lA}.`;
           chartWrapper.style.display = 'none';
         }
 
         else if (key === 'calc_proportion') {
           let num = parseFloat(document.getElementById('inp_num').value);
           let den = parseFloat(document.getElementById('inp_den').value);
-          result = (num / den) * k; // [cite: 487]
+          result = (num / den) * k;
           valText.innerText = `${result.toFixed(2)} (k = ${k})`;
           subText.innerText = `(${num} \u00f7 ${den}) \u00d7 ${k}`;
           interpText.innerText = `The focused cohort subset comprises exactly ${((num/den)*100).toFixed(2)}% of the tracking frame denominator.`;
@@ -686,12 +684,12 @@
           let cases = parseFloat(document.getElementById('inp_cases').value);
           let pop = parseFloat(document.getElementById('inp_popRisk').value);
           let dis = document.getElementById('inp_disease').value || "pathogen factors";
-          result = (cases / pop) * 100; // [cite: 343, 347]
+          result = (cases / pop) * 100;
           valText.innerText = `${result.toFixed(2)}%`;
-          subText.innerText = `(${cases} \u00f7 ${pop}) \u00d7 100`; // [cite: 366]
-          interpText.innerText = `During the tracking cluster period, exactly ${result.toFixed(2)}% of individuals under risk models developed signs of ${dis}. [cite: 364]`;
+          subText.innerText = `(${cases} \u00f7 ${pop}) \u00d7 100`;
+          interpText.innerText = `During the tracking cluster period, exactly ${result.toFixed(2)}% of individuals under risk models developed signs of ${dis}.`;
           chartWrapper.style.display = 'block';
-          renderChart([cases, pop - cases], ['Ill Cases', 'Well / Non-Cases'], 'doughnut', 'Outbreak Profiles'); // [cite: 1025]
+          renderChart([cases, pop - cases], ['Ill Cases', 'Well / Non-Cases'], 'doughnut', 'Outbreak Profiles');
         }
 
         else if (key === 'calc_secattack') {
@@ -700,31 +698,31 @@
           if(document.getElementById('sar-mode').value === 'direct') {
             finalDen = parseFloat(document.getElementById('inp_totalCont').value);
           } else {
-            finalDen = parseFloat(document.getElementById('inp_bTotal').value) - parseFloat(document.getElementById('inp_bPrimary').value) - parseFloat(document.getElementById('inp_bCoPrimary').value) - parseFloat(document.getElementById('inp_bImmune').value); // [cite: 420-423]
+            finalDen = parseFloat(document.getElementById('inp_bTotal').value) - parseFloat(document.getElementById('inp_bPrimary').value) - parseFloat(document.getElementById('inp_bCoPrimary').value) - parseFloat(document.getElementById('inp_bImmune').value);
           }
-          result = (sec / finalDen) * 100; // [cite: 427]
+          result = (sec / finalDen) * 100;
           valText.innerText = `${result.toFixed(2)}%`;
           subText.innerText = `(${sec} \u00f7 ${finalDen}) \u00d7 100`;
-          interpText.innerText = `Approximately ${result.toFixed(2)}% of susceptible transmission lines experienced secondary cluster propagation. [cite: 455]`;
+          interpText.innerText = `Approximately ${result.toFixed(2)}% of susceptible transmission lines experienced secondary cluster propagation.`;
           chartWrapper.style.display = 'block';
-          renderChart([sec, finalDen - sec], ['Secondary Spread', 'Remaining Unaffected'], 'doughnut', 'Infectivity Spread'); // [cite: 1028]
+          renderChart([sec, finalDen - sec], ['Secondary Spread', 'Remaining Unaffected'], 'doughnut', 'Infectivity Spread');
         }
 
         else if (key === 'calc_casefat') {
           let d = parseFloat(document.getElementById('inp_deaths').value);
           let c = parseFloat(document.getElementById('inp_cases').value);
-          result = (d / c) * 100; // [cite: 786]
+          result = (d / c) * 100;
           valText.innerText = `${result.toFixed(2)}%`;
-          subText.innerText = `(${d} \u00f7 ${c}) \u00d7 100`; // [cite: 793]
+          subText.innerText = `(${d} \u00f7 ${c}) \u00d7 100`;
           interpText.innerText = `Out of total diagnosed case records, exactly ${result.toFixed(2)}% resulted in fatal clinical outcomes.`;
           chartWrapper.style.display = 'none';
         }
 
         else if (key === 'calc_nnt') {
-          let arr = parseFloat(document.getElementById('inp_cer').value) - parseFloat(document.getElementById('inp_eer').value); // [cite: 702]
+          let arr = parseFloat(document.getElementById('inp_cer').value) - parseFloat(document.getElementById('inp_eer').value);
           if(arr <= 0) { valText.innerText = "N/A"; interpText.innerText = "Absolute metrics yield no therapeutic risk shifts (ARR \u2264 0)."; return; }
-          result = 1 / arr; // [cite: 719]
-          valText.innerText = `NNT = ${Math.ceil(result)} (Raw score: ${result.toFixed(3)})`; // [cite: 722, 723]
+          result = 1 / arr;
+          valText.innerText = `NNT = ${Math.ceil(result)} (Raw score: ${result.toFixed(3)})`;
           subText.innerText = `1 \u00f7 ${arr.toFixed(4)}`;
           interpText.innerText = `It is clinically required to treat exactly ${Math.ceil(result)} individuals inside this parameters bracket to systematically avert 1 target event loss.`;
           chartWrapper.style.display = 'none';
@@ -749,7 +747,7 @@
 
     function renderChart(data, labels, type, title) {
       const ctx = document.getElementById('canvas-instance').getContext('2d');
-      if (activeChartInstance) activeChartInstance.destroy(); // [cite: 1041]
+      if (activeChartInstance) activeChartInstance.destroy();
       
       activeChartInstance = new Chart(ctx, {
         type: type,
@@ -771,7 +769,7 @@
     }
 
     function resetActiveForm() {
-      if(registry[activeView]) switchView(activeView); // [cite: 321]
+      if(registry[activeView]) switchView(activeView);
     }
 
     function triggerActiveCalculation() {
@@ -785,7 +783,7 @@
           const el = document.getElementById(`inp_${f}`);
           if(el) el.value = cfg.defaults[idx];
         });
-        processCalculation(activeView); // [cite: 317]
+        processCalculation(activeView);
       } else {
         alert("Scenario configuration models map successfully to this active input array form.");
       }
@@ -796,21 +794,21 @@
       if(val === "-" || val === "") { alert("Please run calculations prior to appending parameters data to reports."); return; }
 
       reportCalculations.push({
-        id: Date.now(), // [cite: 917]
-        title: registry[activeView].title, // [cite: 918]
-        result: val, // [cite: 925]
-        substitution: document.getElementById('res-sub').innerText, // [cite: 928]
-        interpretation: document.getElementById('res-interp').innerText // [cite: 929]
+        id: Date.now(),
+        title: registry[activeView].title,
+        result: val,
+        substitution: document.getElementById('res-sub').innerText,
+        interpretation: document.getElementById('res-interp').innerText
       });
-      localStorage.setItem('epi_report', JSON.stringify(reportCalculations)); // [cite: 915]
-      alert("Operational track staged into report compilation frames. [cite: 944]");
+      localStorage.setItem('epi_report', JSON.stringify(reportCalculations));
+      alert("Operational track staged into report compilation frames.");
     }
 
     function renderSavedCalculations(target) {
       target.innerHTML = `
         <div class="card">
           <h2>LocalStorage Logging Matrix</h2>
-          <p style="color:var(--text-light); font-size:0.8rem; margin-bottom:1rem;">Browser-enclosed offline memory caches. [cite: 19]</p>
+          <p style="color:var(--text-light); font-size:0.8rem; margin-bottom:1rem;">Browser-enclosed offline memory caches.</p>
           <div style="padding:1rem; border:1px dashed var(--border); border-radius:8px; text-align:center; color:var(--text-light); font-size:0.85rem;">
             No direct local trace blocks logged. All workspace data transfers cleanly into live reports.
           </div>
@@ -823,7 +821,7 @@
         target.innerHTML = `
           <div class="card">
             <h2>EpiMeasure Report Builder Engine</h2>
-            <p style="color:var(--text-light); font-size:0.85rem; line-height:1.5;">Staging tracks empty. Select <strong>Add to Report</strong> within individual calculator screens to compile output document profiles. [cite: 942]</p>
+            <p style="color:var(--text-light); font-size:0.85rem; line-height:1.5;">Staging tracks empty. Select <strong>Add to Report</strong> within individual calculator screens to compile output document profiles.</p>
           </div>
         `;
         return;
@@ -844,11 +842,11 @@
 
       target.innerHTML = `
         <div class="card">
-          <h2>Report Compilation Platform [cite: 224]</h2>
-          <p style="color:var(--text-light); font-size:0.8rem; margin-bottom:0.75rem;">Reorder and verify tracks prior to printing out A4 PDF summary configurations layout files. [cite: 946, 947]</p>
+          <h2>Report Compilation Platform</h2>
+          <p style="color:var(--text-light); font-size:0.8rem; margin-bottom:0.75rem;">Reorder and verify tracks prior to printing out A4 PDF summary configurations layout files.</p>
           <div style="display:flex; gap:0.4rem; margin-bottom:1rem; flex-wrap:wrap;">
-            <button class="btn btn-primary" onclick="buildPDF()"><span class="material-symbols-outlined">download</span> Download PDF Document [cite: 968]</button>
-            <button class="btn btn-secondary" onclick="clearReport()"><span class="material-symbols-outlined">clear_all</span> Clear All Tracks [cite: 972]</button>
+            <button class="btn btn-primary" onclick="buildPDF()"><span class="material-symbols-outlined">download</span> Download PDF Document</button>
+            <button class="btn btn-secondary" onclick="clearReport()"><span class="material-symbols-outlined">clear_all</span> Clear All Tracks</button>
           </div>
           <div>${rows}</div>
         </div>
@@ -862,14 +860,14 @@
         reportCalculations[idx] = reportCalculations[target];
         reportCalculations[target] = tmp;
         localStorage.setItem('epi_report', JSON.stringify(reportCalculations));
-        renderReportBuilder(document.getElementById('view-target')); // [cite: 947]
+        renderReportBuilder(document.getElementById('view-target'));
       }
     }
 
     function removeItem(idx) {
       reportCalculations.splice(idx, 1);
       localStorage.setItem('epi_report', JSON.stringify(reportCalculations));
-      renderReportBuilder(document.getElementById('view-target')); // [cite: 945]
+      renderReportBuilder(document.getElementById('view-target'));
     }
 
     function clearReport() {
@@ -882,36 +880,36 @@
 
     function buildPDF() {
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF('p', 'mm', 'a4'); // [cite: 978]
+      const doc = new jsPDF('p', 'mm', 'a4');
       
       doc.setFont("Helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(5, 150, 69);
-      doc.text("EpiMeasure Analytics Summary Report", 15, 25); // [cite: 983]
+      doc.text("EpiMeasure Analytics Summary Report", 15, 25);
       
       doc.setFont("Helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(100, 116, 139);
-      doc.text(`Generated Timeline Target: ${new Date().toLocaleString()}`, 15, 31); // [cite: 984]
+      doc.text(`Generated Timeline Target: ${new Date().toLocaleString()}`, 15, 31);
       doc.line(15, 35, 195, 35);
 
       let y = 45;
 
       reportCalculations.forEach((item, i) => {
-        if(y > 250) { doc.addPage(); y = 20; } // [cite: 991]
+        if(y > 250) { doc.addPage(); y = 20; }
         doc.setFont("Helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(30, 41, 59);
-        doc.text(`Track Layer #${i + 1}: ${item.title}`, 15, y); y += 6; // [cite: 1003]
+        doc.text(`Track Layer #${i + 1}: ${item.title}`, 15, y); y += 6;
         
         doc.setFont("Helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(5, 150, 69);
-        doc.text(`Result Scale: ${item.result}`, 15, y); y += 5; // [cite: 1008]
+        doc.text(`Result Scale: ${item.result}`, 15, y); y += 5;
 
         doc.setFont("Helvetica", "oblique"); doc.setFontSize(9); doc.setTextColor(30, 41, 59);
-        let split = doc.splitTextToSize(`Interpretation Framework: ${item.interpretation}`, 175); // [cite: 995]
-        doc.text(split, 15, y); y += (split.length * 5) + 8; // [cite: 1010]
+        let split = doc.splitTextToSize(`Interpretation Framework: ${item.interpretation}`, 175);
+        doc.text(split, 15, y); y += (split.length * 5) + 8;
       });
 
       let totalPages = doc.internal.getNumberOfPages();
       for(let i=1; i<=totalPages; i++) {
         doc.setPage(i);
         doc.setFont("Helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(150, 150, 150);
-        doc.text("Crafted by Dr Suriya Kumareswaran | dr.suirya.moh.gov.my", 15, 287); // [cite: 1001]
-        doc.text(`Page ${i} of ${totalPages}`, 180, 287); // [cite: 992]
+        doc.text("Crafted by Dr Suriya Kumareswaran | dr.suirya.moh.gov.my", 15, 287);
+        doc.text(`Page ${i} of ${totalPages}`, 180, 287);
       }
       doc.save(`EpiMeasure_Executive_Summary_Report_${Date.now()}.pdf`);
     }
@@ -919,18 +917,18 @@
     function renderFormulaReference(target) {
       let references = Object.keys(registry).filter(k => registry[k].cat).map(k => `
         <div class="card" style="margin-bottom:0.75rem; border-left:3px solid var(--teal); padding:1rem;">
-          <h3 style="color:var(--primary); font-size:0.95rem;">${registry[k].title} [cite: 1072]</h3>
-          <p style="font-size:0.7rem; text-transform:uppercase; font-weight:700; color:var(--text-light); margin-bottom:0.25rem;">Tier: ${registry[k].cat} [cite: 1073]</p>
-          <div style="font-family:monospace; background:rgba(0,0,0,0.025); padding:0.5rem; border-radius:6px; font-size:0.85rem; color:var(--teal); margin:0.4rem 0; word-break:break-all;">[cite: 1074] ${registry[k].formula}</div>
-          <p style="font-size:0.8rem; color:var(--text-dark); line-height:1.4;"><strong>Common Mistake:</strong> [cite: 1080] ${registry[k].mist}</p>
-          <button class="btn btn-secondary" style="min-height:36px; padding:0 0.75rem; font-size:0.75rem; margin-top:0.5rem;" onclick="switchView('${k}')">Open Panel [cite: 1081]</button>
+          <h3 style="color:var(--primary); font-size:0.95rem;">${registry[k].title}</h3>
+          <p style="font-size:0.7rem; text-transform:uppercase; font-weight:700; color:var(--text-light); margin-bottom:0.25rem;">Tier: ${registry[k].cat}</p>
+          <div style="font-family:monospace; background:rgba(0,0,0,0.025); padding:0.5rem; border-radius:6px; font-size:0.85rem; color:var(--teal); margin:0.4rem 0; word-break:break-all;"> ${registry[k].formula}</div>
+          <p style="font-size:0.8rem; color:var(--text-dark); line-height:1.4;"><strong>Common Mistake:</strong> ${registry[k].mist}</p>
+          <button class="btn btn-secondary" style="min-height:36px; padding:0 0.75rem; font-size:0.75rem; margin-top:0.5rem;" onclick="switchView('${k}')">Open Panel</button>
         </div>
       `).join('');
 
       target.innerHTML = `
         <div class="card">
-          <h2>Formula Database Matrix Reference [cite: 284]</h2>
-          <p style="color:var(--text-light); font-size:0.8rem; margin-bottom:1rem;">Algorithmic calculation parameters configured for active field operations analysis models. [cite: 1070]</p>
+          <h2>Formula Database Matrix Reference</h2>
+          <p style="color:var(--text-light); font-size:0.8rem; margin-bottom:1rem;">Algorithmic calculation parameters configured for active field operations analysis models.</p>
           <div>${references}</div>
         </div>
       `;
@@ -940,14 +938,14 @@
       target.innerHTML = `
         <div class="card" style="text-align:center; padding:2rem 1rem;">
           <span class="material-symbols-outlined" style="font-size:3.5rem; color:var(--primary);">clinical_notes</span>
-          <h2 style="margin-top:0.75rem; font-size:1.3rem;">EpiMeasure Platform Framework [cite: 145]</h2>
+          <h2 style="margin-top:0.75rem; font-size:1.3rem;">EpiMeasure Platform Framework</h2>
           <p style="color:var(--text-light); max-width:600px; margin:0.4rem auto 1.25rem auto; line-height:1.5; font-size:0.85rem;">
-            A clinical, sandboxed analytics package crafted specifically for processing public health parameters under completely local execution structures. [cite: 148, 183]
+            A clinical, sandboxed analytics package crafted specifically for processing public health parameters under completely local execution structures.
           </p>
           <div style="border-top:1px solid var(--border); padding-top:1.25rem; color:var(--text-dark); font-weight:600; font-size:0.85rem;">
             Software Development Authority Attribution:<br>
-            <span style="color:var(--primary); font-size:1.1rem; display:inline-block; margin-top:0.25rem; font-weight:700;">Dr Suriya Kumareswaran [cite: 155]</span><br>
-            <span style="font-weight:500; color:var(--text-light); font-size:0.8rem;">dr.suirya.moh.gov.my [cite: 156]</span>
+            <span style="color:var(--primary); font-size:1.1rem; display:inline-block; margin-top:0.25rem; font-weight:700;">Dr Suriya Kumareswaran</span><br>
+            <span style="font-weight:500; color:var(--text-light); font-size:0.8rem;">dr.suirya.moh.gov.my</span>
           </div>
         </div>
       `;
